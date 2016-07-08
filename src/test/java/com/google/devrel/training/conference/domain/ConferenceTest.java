@@ -6,9 +6,9 @@ import static org.junit.Assert.*;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
-import de.joevoi.whobringsthebeer.domain.Event;
+import de.joevoi.whobringsthebeer.domain.Conference;
 import de.joevoi.whobringsthebeer.domain.Profile;
-import de.joevoi.whobringsthebeer.form.EventForm;
+import de.joevoi.whobringsthebeer.form.ConferenceForm;
 
 import org.junit.After;
 import org.junit.Before;
@@ -45,7 +45,7 @@ public class ConferenceTest {
 
     private List<String> topics;
 
-    private EventForm conferenceForm;
+    private ConferenceForm conferenceForm;
 
     private final LocalServiceTestHelper helper =
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig()
@@ -61,7 +61,7 @@ public class ConferenceTest {
         topics.add("Google");
         topics.add("Cloud");
         topics.add("Platform");
-        conferenceForm = new EventForm(NAME, DESCRIPTION, topics, CITY, startDate, endDate,
+        conferenceForm = new ConferenceForm(NAME, DESCRIPTION, topics, CITY, startDate, endDate,
                 CAP);
     }
 
@@ -72,14 +72,14 @@ public class ConferenceTest {
 
     @Test(expected = NullPointerException.class)
     public void testNullName() throws Exception {
-        EventForm nullConferenceForm = new EventForm(null, DESCRIPTION, topics, CITY,
+        ConferenceForm nullConferenceForm = new ConferenceForm(null, DESCRIPTION, topics, CITY,
                 startDate, endDate, CAP);
-        new Event(ID, ORGANIZER_USER_ID, nullConferenceForm);
+        new Conference(ID, ORGANIZER_USER_ID, nullConferenceForm);
     }
 
     @Test
     public void testConference() throws Exception {
-        Event conference = new Event(ID, ORGANIZER_USER_ID, conferenceForm);
+        Conference conference = new Conference(ID, ORGANIZER_USER_ID, conferenceForm);
         assertEquals(ID, conference.getId());
         assertEquals(NAME, conference.getName());
         assertEquals(DESCRIPTION, conference.getDescription());
@@ -101,20 +101,20 @@ public class ConferenceTest {
         String displayName = "Udacity Student";
         Profile profile = new Profile(ORGANIZER_USER_ID, displayName, "", null);
         ofy().save().entity(profile).now();
-        Event conference = new Event(ID, ORGANIZER_USER_ID, conferenceForm);
+        Conference conference = new Conference(ID, ORGANIZER_USER_ID, conferenceForm);
         assertEquals(displayName, conference.getOrganizerDisplayName());
     }
 
     @Test
     public void testBookSeats() throws Exception {
-        Event conference = new Event(ID, ORGANIZER_USER_ID, conferenceForm);
+        Conference conference = new Conference(ID, ORGANIZER_USER_ID, conferenceForm);
         conference.bookSeats(1);
         assertEquals(CAP - 1, conference.getSeatsAvailable());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testBookSeatsFailure() throws Exception {
-        Event conference = new Event(ID, ORGANIZER_USER_ID, conferenceForm);
+        Conference conference = new Conference(ID, ORGANIZER_USER_ID, conferenceForm);
         conference.bookSeats(500);
         assertEquals(0, conference.getSeatsAvailable());
         // this will fail

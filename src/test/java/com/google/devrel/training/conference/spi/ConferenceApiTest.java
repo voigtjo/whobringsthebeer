@@ -14,7 +14,7 @@ import com.googlecode.objectify.Key;
 import de.joevoi.whobringsthebeer.domain.Profile;
 import de.joevoi.whobringsthebeer.form.ProfileForm;
 import de.joevoi.whobringsthebeer.form.ProfileForm.TeeShirtSize;
-import de.joevoi.whobringsthebeer.spi.EventApi;
+import de.joevoi.whobringsthebeer.spi.ConferenceApi;
 
 import org.junit.After;
 import org.junit.Before;
@@ -51,7 +51,7 @@ public class ConferenceApiTest {
 
     private User user;
 
-    private EventApi conferenceApi;
+    private ConferenceApi conferenceApi;
 
     private final LocalServiceTestHelper helper =
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig()
@@ -61,7 +61,7 @@ public class ConferenceApiTest {
     public void setUp() throws Exception {
         helper.setUp();
         user = new User(EMAIL, "gmail.com", USER_ID);
-        conferenceApi = new EventApi();
+        conferenceApi = new ConferenceApi();
     }
 
     @After

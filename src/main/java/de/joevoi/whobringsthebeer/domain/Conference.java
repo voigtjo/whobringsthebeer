@@ -2,7 +2,10 @@ package de.joevoi.whobringsthebeer.domain;
 
 import static de.joevoi.whobringsthebeer.service.OfyService.ofy;
 
-import com.googlecode.objectify.condition.IfNotDefault;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.ApiResourceProperty;
 import com.google.common.base.Preconditions;
@@ -13,19 +16,16 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
+import com.googlecode.objectify.condition.IfNotDefault;
 
-import de.joevoi.whobringsthebeer.form.EventForm;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import de.joevoi.whobringsthebeer.form.ConferenceForm;
 
 /**
  * Conference class stores conference information.
  */
 @Entity
 @Cache
-public class Event {
+public class Conference {
 
     private static final String DEFAULT_CITY = "Default City";
 
@@ -107,10 +107,10 @@ public class Event {
     /**
      * Just making the default constructor private.
      */
-    private Event() {}
+    private Conference() {}
 
-    public Event(final long id, final String organizerUserId,
-                      final EventForm conferenceForm) {
+    public Conference(final long id, final String organizerUserId,
+                      final ConferenceForm conferenceForm) {
         Preconditions.checkNotNull(conferenceForm.getName(), "The name is required");
         this.id = id;
         this.profileKey = Key.create(Profile.class, organizerUserId);
@@ -137,7 +137,7 @@ public class Event {
 
     // Get a String version of the key
     public String getWebsafeKey() {
-        return Key.create(profileKey, Event.class, id).getString();
+        return Key.create(profileKey, Conference.class, id).getString();
     }
 
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
@@ -206,7 +206,7 @@ public class Event {
      *
      * @param conferenceForm contains form data sent from the client.
      */
-    public void updateWithConferenceForm(EventForm conferenceForm) {
+    public void updateWithConferenceForm(ConferenceForm conferenceForm) {
         this.name = conferenceForm.getName();
         this.description = conferenceForm.getDescription();
         List<String> topics = conferenceForm.getTopics();

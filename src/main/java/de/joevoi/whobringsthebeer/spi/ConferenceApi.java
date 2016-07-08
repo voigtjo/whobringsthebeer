@@ -17,21 +17,16 @@ import com.google.api.server.spi.response.ConflictException;
 import com.google.api.server.spi.response.ForbiddenException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.api.server.spi.response.UnauthorizedException;
-import com.google.appengine.api.memcache.MemcacheService;
-import com.google.appengine.api.memcache.MemcacheServiceFactory;
-import com.google.appengine.api.taskqueue.Queue;
-import com.google.appengine.api.taskqueue.QueueFactory;
-import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
 
 import de.joevoi.whobringsthebeer.Constants;
-import de.joevoi.whobringsthebeer.domain.Event;
+import de.joevoi.whobringsthebeer.domain.Conference;
 import de.joevoi.whobringsthebeer.domain.Profile;
-import de.joevoi.whobringsthebeer.form.EventForm;
-import de.joevoi.whobringsthebeer.form.EventQueryForm;
+import de.joevoi.whobringsthebeer.form.ConferenceForm;
+import de.joevoi.whobringsthebeer.form.ConferenceQueryForm;
 import de.joevoi.whobringsthebeer.form.ProfileForm;
 import de.joevoi.whobringsthebeer.form.ProfileForm.TeeShirtSize;
 
@@ -43,10 +38,10 @@ import de.joevoi.whobringsthebeer.form.ProfileForm.TeeShirtSize;
         Constants.WEB_CLIENT_ID,
         Constants.API_EXPLORER_CLIENT_ID },
         description = "API for the WhoBringsTheBeer Backend application.")
-public class EventApi {
+public class ConferenceApi {
 	
 	private static final Logger LOG = Logger.getLogger(
-			EventApi.class.getName());
+			ConferenceApi.class.getName());
 
     /*
      * Get the display name from the user's email. For example, if the email is
@@ -141,16 +136,18 @@ public class EventApi {
      */
     @ApiMethod(name = "getProfile", path = "profile", httpMethod = HttpMethod.GET)
     public Profile getProfile(final User user) throws UnauthorizedException {
+    	LOG.info("conference.getProfile:  + user= " + user);
         if (user == null) {
             throw new UnauthorizedException("Authorization required");
         }
-
+        LOG.info("conference.getProfile:  Authorization success");
         // TODO
         // load the Profile Entity
         String userId = user.getUserId();
         Key key = Key.create(Profile.class, userId);
 
         Profile profile = (Profile) ofy().load().key(key).now();
+        LOG.info("conference.getProfile:  profile= " + profile);
         return profile;
     }
 
@@ -183,7 +180,7 @@ public class EventApi {
      * @throws UnauthorizedException when the user is not signed in.
      */
     @ApiMethod(name = "createConference", path = "conference", httpMethod = HttpMethod.POST)
-    public Event createConference(final User user, final EventForm conferenceForm)
+    public Conference createConference(final User user, final ConferenceForm conferenceForm)
         throws UnauthorizedException {
     	LOG.warning("Create Conference ...");
         if (user == null) {
@@ -192,21 +189,21 @@ public class EventApi {
         // Allocate Id first, in order to make the transaction idempotent.
         final String userId = user.getUserId();
         Key<Profile> profileKey = Key.create(Profile.class, userId);
-        final Key<Event> conferenceKey = factory().allocateId(profileKey, Event.class);
+        final Key<Conference> conferenceKey = factory().allocateId(profileKey, Conference.class);
         final long conferenceId = conferenceKey.getId();
 //        final Queue queue = QueueFactory.getDefaultQueue();
 //        final Queue queue = QueueFactory.getQueue("email-queue");
 
         
         // Start a transaction.
-        Event conference = ofy().transact(new Work<Event>() {
+        Conference conference = ofy().transact(new Work<Conference>() {
             @Override
-            public Event run() {
+            public Conference run() {
             	System.out.println();
             	LOG.warning("Create Conference: run ...");
                 // Fetch user's Profile.
                 Profile profile = getProfileFromUser(user);
-                Event conference = new Event(conferenceId, userId, conferenceForm);
+                Conference conference = new Conference(conferenceId, userId, conferenceForm);
                 // Save Conference and Profile.
                 ofy().save().entities(conference, profile).now();
                 LOG.warning("Create Conference: email= " + profile.getMainEmail() + ", conf= " + conference.toString());
@@ -226,9 +223,9 @@ public class EventApi {
             path = "queryConferences_nofilters",
             httpMethod = HttpMethod.POST
     )
-    public List<Event> queryConferences_nofilters() {
+    public List<Conference> queryConferences_nofilters() {
         // Find all entities of type Conference
-        Query<Event> query = ofy().load().type(Event.class).order("name");
+        Query<Conference> query = ofy().load().type(Conference.class).order("name");
 
         return query.list();
     }
@@ -247,11 +244,11 @@ public class EventApi {
             path = "queryConferences",
             httpMethod = HttpMethod.POST
     )
-    public List<Event> queryConferences(EventQueryForm conferenceQueryForm) {
-        Iterable<Event> conferenceIterable = conferenceQueryForm.getQuery();
-        List<Event> result = new ArrayList<>(0);
+    public List<Conference> queryConferences(ConferenceQueryForm conferenceQueryForm) {
+        Iterable<Conference> conferenceIterable = conferenceQueryForm.getQuery();
+        List<Conference> result = new ArrayList<>(0);
         List<Key<Profile>> organizersKeyList = new ArrayList<>(0);
-        for (Event conference : conferenceIterable) {
+        for (Conference conference : conferenceIterable) {
             organizersKeyList.add(Key.create(Profile.class, conference.getOrganizerUserId()));
             result.add(conference);
         }
@@ -261,9 +258,9 @@ public class EventApi {
     }
 
 
-    public List<Event> filterPlayground() {
+    public List<Conference> filterPlayground() {
         // Query<Conference> query = ofy().load().type(Conference.class).order("name");
-        Query<Event> query = ofy().load().type(Event.class);
+        Query<Conference> query = ofy().load().type(Conference.class);
 
         /*
         // Filter on city
@@ -306,14 +303,14 @@ public class EventApi {
             path = "getConferencesCreated",
             httpMethod = HttpMethod.POST
     )
-    public List<Event> getConferencesCreated(final User user) throws UnauthorizedException {
+    public List<Conference> getConferencesCreated(final User user) throws UnauthorizedException {
         // If not signed in, throw a 401 error.
         if (user == null) {
             throw new UnauthorizedException("Authorization required");
         }
         String userId = user.getUserId();
         Key<Profile> userKey = Key.create(Profile.class, userId);
-        return ofy().load().type(Event.class)
+        return ofy().load().type(Conference.class)
                 .ancestor(userKey)
                 .order("name").list();
     }
@@ -360,11 +357,11 @@ public class EventApi {
             path = "conference/{websafeConferenceKey}",
             httpMethod = HttpMethod.GET
     )
-    public Event getConference(
+    public Conference getConference(
             @Named("websafeConferenceKey") final String websafeConferenceKey)
             throws NotFoundException {
-        Key<Event> conferenceKey = Key.create(websafeConferenceKey);
-        Event conference = ofy().load().key(conferenceKey).now();
+        Key<Conference> conferenceKey = Key.create(websafeConferenceKey);
+        Conference conference = ofy().load().key(conferenceKey).now();
         if (conference == null) {
             throw new NotFoundException("No Conference found with key: " + websafeConferenceKey);
         }
@@ -405,10 +402,10 @@ public class EventApi {
 
                 // Get the conference key
                 // Will throw ForbiddenException if the key cannot be created
-                Key<Event> conferenceKey = Key.create(websafeConferenceKey);
+                Key<Conference> conferenceKey = Key.create(websafeConferenceKey);
 
                 // Get the Conference entity from the datastore
-                Event conference = ofy().load().key(conferenceKey).now();
+                Conference conference = ofy().load().key(conferenceKey).now();
 
                 // 404 when there is no Conference with the given conferenceId.
                 if (conference == null) {
@@ -490,8 +487,8 @@ public class EventApi {
         WrappedBoolean result = ofy().transact(new Work<WrappedBoolean>() {
             @Override
             public WrappedBoolean run() {
-                Key<Event> conferenceKey = Key.create(websafeConferenceKey);
-                Event conference = ofy().load().key(conferenceKey).now();
+                Key<Conference> conferenceKey = Key.create(websafeConferenceKey);
+                Conference conference = ofy().load().key(conferenceKey).now();
                 // 404 when there is no Conference with the given conferenceId.
                 if (conference == null) {
                     return new  WrappedBoolean(false,
@@ -535,7 +532,7 @@ public class EventApi {
             path = "getConferencesToAttend",
             httpMethod = HttpMethod.GET
     )
-    public Collection<Event> getConferencesToAttend(final User user)
+    public Collection<Conference> getConferencesToAttend(final User user)
             throws UnauthorizedException, NotFoundException {
         // If not signed in, throw a 401 error.
         if (user == null) {
@@ -546,9 +543,9 @@ public class EventApi {
             throw new NotFoundException("Profile doesn't exist.");
         }
         List<String> keyStringsToAttend = profile.getConferenceKeysToAttend();
-        List<Key<Event>> keysToAttend = new ArrayList<>();
+        List<Key<Conference>> keysToAttend = new ArrayList<>();
         for (String keyString : keyStringsToAttend) {
-            keysToAttend.add(Key.<Event>create(keyString));
+            keysToAttend.add(Key.<Conference>create(keyString));
         }
         return ofy().load().keys(keysToAttend).values();
     }

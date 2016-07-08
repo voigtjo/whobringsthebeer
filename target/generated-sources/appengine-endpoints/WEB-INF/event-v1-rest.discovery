@@ -1,0 +1,345 @@
+{
+ "kind": "discovery#restDescription",
+ "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/7IhjG-8VmFChklfsmJ7VgJ4GKbo\"",
+ "discoveryVersion": "v1",
+ "id": "event:v1",
+ "name": "event",
+ "version": "v1",
+ "description": "API for the WhoBringsTheBeer Backend application.",
+ "icons": {
+  "x16": "http://www.google.com/images/icons/product/search-16.gif",
+  "x32": "http://www.google.com/images/icons/product/search-32.gif"
+ },
+ "protocol": "rest",
+ "baseUrl": "https://whobringsthebeer.appspot.com/_ah/api/event/v1/",
+ "basePath": "/_ah/api/event/v1/",
+ "rootUrl": "https://whobringsthebeer.appspot.com/_ah/api/",
+ "servicePath": "event/v1/",
+ "batchPath": "batch",
+ "parameters": {
+  "alt": {
+   "type": "string",
+   "description": "Data format for the response.",
+   "default": "json",
+   "enum": [
+    "json"
+   ],
+   "enumDescriptions": [
+    "Responses with Content-Type of application/json"
+   ],
+   "location": "query"
+  },
+  "fields": {
+   "type": "string",
+   "description": "Selector specifying which fields to include in a partial response.",
+   "location": "query"
+  },
+  "key": {
+   "type": "string",
+   "description": "API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.",
+   "location": "query"
+  },
+  "oauth_token": {
+   "type": "string",
+   "description": "OAuth 2.0 token for the current user.",
+   "location": "query"
+  },
+  "prettyPrint": {
+   "type": "boolean",
+   "description": "Returns response with indentations and line breaks.",
+   "default": "true",
+   "location": "query"
+  },
+  "quotaUser": {
+   "type": "string",
+   "description": "Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.",
+   "location": "query"
+  },
+  "userIp": {
+   "type": "string",
+   "description": "IP address of the site where the request originates. Use this if you want to enforce per-user limits.",
+   "location": "query"
+  }
+ },
+ "auth": {
+  "oauth2": {
+   "scopes": {
+    "https://www.googleapis.com/auth/userinfo.email": {
+     "description": "View your email address"
+    }
+   }
+  }
+ },
+ "schemas": {
+  "Event": {
+   "id": "Event",
+   "type": "object",
+   "properties": {
+    "eventDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "location": {
+     "type": "string"
+    },
+    "memberKeys": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "organizerDisplayName": {
+     "type": "string"
+    },
+    "websafeKey": {
+     "type": "string"
+    }
+   }
+  },
+  "EventCollection": {
+   "id": "EventCollection",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "Event"
+     }
+    }
+   }
+  },
+  "EventForm": {
+   "id": "EventForm",
+   "type": "object",
+   "properties": {
+    "eventDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "location": {
+     "type": "string"
+    }
+   }
+  },
+  "Profile": {
+   "id": "Profile",
+   "type": "object",
+   "properties": {
+    "conferenceKeysToAttend": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "displayName": {
+     "type": "string"
+    },
+    "eventKeysToAttend": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "groupKeysMemberOf": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "mainEmail": {
+     "type": "string"
+    },
+    "teeShirtSize": {
+     "$ref": "TeeShirtSize"
+    },
+    "userId": {
+     "type": "string"
+    }
+   }
+  },
+  "TeeShirtSize": {
+   "id": "TeeShirtSize",
+   "type": "string",
+   "enum": [
+    "L",
+    "M",
+    "NOT_SPECIFIED",
+    "S",
+    "XL",
+    "XS",
+    "XXL",
+    "XXXL"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "WrappedBoolean": {
+   "id": "WrappedBoolean",
+   "type": "object",
+   "properties": {
+    "reason": {
+     "type": "string"
+    },
+    "result": {
+     "type": "boolean"
+    }
+   }
+  }
+ },
+ "methods": {
+  "createEvent": {
+   "id": "event.createEvent",
+   "path": "event",
+   "httpMethod": "POST",
+   "parameters": {
+    "websafeGroupKey": {
+     "type": "string",
+     "required": true,
+     "location": "query"
+    }
+   },
+   "parameterOrder": [
+    "websafeGroupKey"
+   ],
+   "request": {
+    "$ref": "EventForm",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "Event"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "getEvent": {
+   "id": "event.getEvent",
+   "path": "event/{websafeEventKey}",
+   "httpMethod": "GET",
+   "parameters": {
+    "websafeEventKey": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "websafeEventKey"
+   ],
+   "response": {
+    "$ref": "Event"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "getEventsOfGroup": {
+   "id": "event.getEventsOfGroup",
+   "path": "getEventsCreated",
+   "httpMethod": "POST",
+   "parameters": {
+    "websafeGroupKey": {
+     "type": "string",
+     "required": true,
+     "location": "query"
+    }
+   },
+   "parameterOrder": [
+    "websafeGroupKey"
+   ],
+   "response": {
+    "$ref": "EventCollection"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "getEventsToAttend": {
+   "id": "event.getEventsToAttend",
+   "path": "getEventsToAttend",
+   "httpMethod": "GET",
+   "response": {
+    "$ref": "EventCollection"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "getProfile": {
+   "id": "event.getProfile",
+   "path": "profile",
+   "httpMethod": "GET",
+   "response": {
+    "$ref": "Profile"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "queryEvents_nofilters": {
+   "id": "event.queryEvents_nofilters",
+   "path": "queryEvents_nofilters",
+   "httpMethod": "POST",
+   "response": {
+    "$ref": "EventCollection"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "registerForEvent": {
+   "id": "event.registerForEvent",
+   "path": "event/{websafeEventKey}/registration",
+   "httpMethod": "POST",
+   "parameters": {
+    "websafeEventKey": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "websafeEventKey"
+   ],
+   "response": {
+    "$ref": "WrappedBoolean"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "unregisterFromEvent": {
+   "id": "event.unregisterFromEvent",
+   "path": "event/{websafeEventKey}/registration",
+   "httpMethod": "DELETE",
+   "parameters": {
+    "websafeEventKey": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "websafeEventKey"
+   ],
+   "response": {
+    "$ref": "WrappedBoolean"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  }
+ }
+}

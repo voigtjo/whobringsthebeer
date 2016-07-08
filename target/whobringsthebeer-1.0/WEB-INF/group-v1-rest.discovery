@@ -1,0 +1,258 @@
+{
+ "kind": "discovery#restDescription",
+ "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/apo2tc4qugD30wMs7NqhMxYBmv0\"",
+ "discoveryVersion": "v1",
+ "id": "group:v1",
+ "name": "group",
+ "version": "v1",
+ "description": "group API for the WhoBringsTheBeer Backend application.",
+ "icons": {
+  "x16": "http://www.google.com/images/icons/product/search-16.gif",
+  "x32": "http://www.google.com/images/icons/product/search-32.gif"
+ },
+ "protocol": "rest",
+ "baseUrl": "https://whobringsthebeer.appspot.com/_ah/api/group/v1/",
+ "basePath": "/_ah/api/group/v1/",
+ "rootUrl": "https://whobringsthebeer.appspot.com/_ah/api/",
+ "servicePath": "group/v1/",
+ "batchPath": "batch",
+ "parameters": {
+  "alt": {
+   "type": "string",
+   "description": "Data format for the response.",
+   "default": "json",
+   "enum": [
+    "json"
+   ],
+   "enumDescriptions": [
+    "Responses with Content-Type of application/json"
+   ],
+   "location": "query"
+  },
+  "fields": {
+   "type": "string",
+   "description": "Selector specifying which fields to include in a partial response.",
+   "location": "query"
+  },
+  "key": {
+   "type": "string",
+   "description": "API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.",
+   "location": "query"
+  },
+  "oauth_token": {
+   "type": "string",
+   "description": "OAuth 2.0 token for the current user.",
+   "location": "query"
+  },
+  "prettyPrint": {
+   "type": "boolean",
+   "description": "Returns response with indentations and line breaks.",
+   "default": "true",
+   "location": "query"
+  },
+  "quotaUser": {
+   "type": "string",
+   "description": "Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.",
+   "location": "query"
+  },
+  "userIp": {
+   "type": "string",
+   "description": "IP address of the site where the request originates. Use this if you want to enforce per-user limits.",
+   "location": "query"
+  }
+ },
+ "auth": {
+  "oauth2": {
+   "scopes": {
+    "https://www.googleapis.com/auth/userinfo.email": {
+     "description": "View your email address"
+    }
+   }
+  }
+ },
+ "schemas": {
+  "Group": {
+   "id": "Group",
+   "type": "object",
+   "properties": {
+    "description": {
+     "type": "string"
+    },
+    "eventKeys": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "memberKeys": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "name": {
+     "type": "string"
+    },
+    "organizerDisplayName": {
+     "type": "string"
+    },
+    "websafeKey": {
+     "type": "string"
+    }
+   }
+  },
+  "GroupCollection": {
+   "id": "GroupCollection",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "Group"
+     }
+    }
+   }
+  },
+  "WrappedBoolean": {
+   "id": "WrappedBoolean",
+   "type": "object",
+   "properties": {
+    "reason": {
+     "type": "string"
+    },
+    "result": {
+     "type": "boolean"
+    }
+   }
+  }
+ },
+ "methods": {
+  "addMemberToGroup": {
+   "id": "group.addMemberToGroup",
+   "path": "group/{websafeGroupKey}/addMember",
+   "httpMethod": "POST",
+   "parameters": {
+    "websafeGroupKey": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "websafeGroupKey"
+   ],
+   "response": {
+    "$ref": "WrappedBoolean"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "getAllGroups": {
+   "id": "group.getAllGroups",
+   "path": "getAllGroups",
+   "httpMethod": "POST",
+   "response": {
+    "$ref": "GroupCollection"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "getGroup": {
+   "id": "group.getGroup",
+   "path": "group/{websafeGroupKey}",
+   "httpMethod": "GET",
+   "parameters": {
+    "websafeGroupKey": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "websafeGroupKey"
+   ],
+   "response": {
+    "$ref": "Group"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "getGroupsCreated": {
+   "id": "group.getGroupsCreated",
+   "path": "getGroupsCreated",
+   "httpMethod": "POST",
+   "response": {
+    "$ref": "GroupCollection"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "getGroupsMemberOf": {
+   "id": "group.getGroupsMemberOf",
+   "path": "getGroupsMemberOf",
+   "httpMethod": "GET",
+   "response": {
+    "$ref": "GroupCollection"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "removeMemberFromGroup": {
+   "id": "group.removeMemberFromGroup",
+   "path": "group/{websafeGroupKey}/removeMember",
+   "httpMethod": "DELETE",
+   "parameters": {
+    "websafeGroupKey": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "websafeGroupKey"
+   ],
+   "response": {
+    "$ref": "WrappedBoolean"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "saveGroup": {
+   "id": "group.saveGroup",
+   "path": "saveGroup",
+   "httpMethod": "POST",
+   "parameters": {
+    "description": {
+     "type": "string",
+     "required": true,
+     "location": "query"
+    },
+    "name": {
+     "type": "string",
+     "required": true,
+     "location": "query"
+    }
+   },
+   "parameterOrder": [
+    "description",
+    "name"
+   ],
+   "response": {
+    "$ref": "Group"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  }
+ }
+}

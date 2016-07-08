@@ -7,10 +7,10 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.common.collect.ImmutableList;
 
-import de.joevoi.whobringsthebeer.domain.Event;
-import de.joevoi.whobringsthebeer.form.EventForm;
-import de.joevoi.whobringsthebeer.form.EventQueryForm;
-import de.joevoi.whobringsthebeer.spi.EventApi;
+import de.joevoi.whobringsthebeer.domain.Conference;
+import de.joevoi.whobringsthebeer.form.ConferenceForm;
+import de.joevoi.whobringsthebeer.form.ConferenceQueryForm;
+import de.joevoi.whobringsthebeer.spi.ConferenceApi;
 
 import org.junit.After;
 import org.junit.Before;
@@ -70,7 +70,7 @@ public class ConferenceApiGlobalQueryTest {
 
     private Date endDate3;
 
-    private EventApi conferenceApi;
+    private ConferenceApi conferenceApi;
 
     /**
      * The helper here is intentionally use 0 for the percentage, since we test our global queries.
@@ -79,36 +79,36 @@ public class ConferenceApiGlobalQueryTest {
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig()
                     .setDefaultHighRepJobPolicyUnappliedJobPercentage(0));
 
-    private Event conference1;
+    private Conference conference1;
 
-    private Event conference2;
+    private Conference conference2;
 
-    private Event conference3;
+    private Conference conference3;
 
     @Before
     public void setUp() throws Exception {
         helper.setUp();
-        conferenceApi = new EventApi();
+        conferenceApi = new ConferenceApi();
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
         // Create 3 Conferences.
         startDate1 = dateFormat.parse("03/25/2014");
         endDate1 = dateFormat.parse("03/26/2014");
-        EventForm conferenceForm1 = new EventForm(
+        ConferenceForm conferenceForm1 = new ConferenceForm(
                 NAME1, DESCRIPTION1, TOPICS1, CITY1, startDate1, endDate1, CAP1);
-        conference1 = new Event(1001L, USER_ID, conferenceForm1);
+        conference1 = new Conference(1001L, USER_ID, conferenceForm1);
 
         startDate2 = dateFormat.parse("06/25/2014");
         endDate2 = dateFormat.parse("06/26/2014");
-        EventForm conferenceForm2 = new EventForm(
+        ConferenceForm conferenceForm2 = new ConferenceForm(
                 NAME2, DESCRIPTION2, TOPICS2, CITY2, startDate2, endDate2, CAP2);
-        conference2 = new Event(1002L, USER_ID, conferenceForm2);
+        conference2 = new Conference(1002L, USER_ID, conferenceForm2);
 
         startDate3 = dateFormat.parse("09/25/2014");
         endDate3 = dateFormat.parse("09/26/2014");
-        EventForm conferenceForm3 = new EventForm(
+        ConferenceForm conferenceForm3 = new ConferenceForm(
                 NAME3, DESCRIPTION3, TOPICS3, CITY3, startDate3, endDate3, CAP3);
-        conference3 = new Event(1003L, USER_ID, conferenceForm3);
+        conference3 = new Conference(1003L, USER_ID, conferenceForm3);
         ofy().save().entities(conference1, conference2, conference3).now();
     }
 
@@ -121,8 +121,8 @@ public class ConferenceApiGlobalQueryTest {
     @Test
     public void testEmptyQuery() throws Exception {
         // Empty query.
-        EventQueryForm conferenceQueryForm = new EventQueryForm();
-        List<Event> conferences = conferenceApi.queryConferences(conferenceQueryForm);
+        ConferenceQueryForm conferenceQueryForm = new ConferenceQueryForm();
+        List<Conference> conferences = conferenceApi.queryConferences(conferenceQueryForm);
         assertEquals(3, conferences.size());
         assertTrue("The result should contain conference1.", conferences.contains(conference1));
         assertTrue("The result should contain conference2.", conferences.contains(conference2));
@@ -135,13 +135,13 @@ public class ConferenceApiGlobalQueryTest {
     @Test
     public void testCityQuery() throws Exception {
         // A query only specifies the city.
-        EventQueryForm conferenceQueryForm = new EventQueryForm()
-                .filter(new EventQueryForm.Filter(
-                        EventQueryForm.Field.CITY,
-                        EventQueryForm.Operator.EQ,
+        ConferenceQueryForm conferenceQueryForm = new ConferenceQueryForm()
+                .filter(new ConferenceQueryForm.Filter(
+                        ConferenceQueryForm.Field.CITY,
+                        ConferenceQueryForm.Operator.EQ,
                         "Tokyo"
                 ));
-        List<Event> conferences = conferenceApi.queryConferences(conferenceQueryForm);
+        List<Conference> conferences = conferenceApi.queryConferences(conferenceQueryForm);
         assertEquals(1, conferences.size());
         assertTrue("The result should contain conference3.", conferences.contains(conference3));
     }
@@ -149,13 +149,13 @@ public class ConferenceApiGlobalQueryTest {
     @Test
     public void testTopicsQuery() throws Exception {
         // A query only specifies the topics.
-        EventQueryForm conferenceQueryForm = new EventQueryForm()
-                .filter(new EventQueryForm.Filter(
-                        EventQueryForm.Field.TOPIC,
-                        EventQueryForm.Operator.EQ,
+        ConferenceQueryForm conferenceQueryForm = new ConferenceQueryForm()
+                .filter(new ConferenceQueryForm.Filter(
+                        ConferenceQueryForm.Field.TOPIC,
+                        ConferenceQueryForm.Operator.EQ,
                         "Japan"
                 ));
-        List<Event> conferences = conferenceApi.queryConferences(conferenceQueryForm);
+        List<Conference> conferences = conferenceApi.queryConferences(conferenceQueryForm);
         assertEquals(1, conferences.size());
         assertTrue("The result should contain conference3.", conferences.contains(conference3));
     }
@@ -163,23 +163,23 @@ public class ConferenceApiGlobalQueryTest {
     @Test
     public void testComplexQuery() throws Exception {
         // A query specifies the city and topics and month.
-        EventQueryForm conferenceQueryForm = new EventQueryForm()
-                .filter(new EventQueryForm.Filter(
-                        EventQueryForm.Field.TOPIC,
-                        EventQueryForm.Operator.EQ,
+        ConferenceQueryForm conferenceQueryForm = new ConferenceQueryForm()
+                .filter(new ConferenceQueryForm.Filter(
+                        ConferenceQueryForm.Field.TOPIC,
+                        ConferenceQueryForm.Operator.EQ,
                         "Platform"
                 ))
-                .filter(new EventQueryForm.Filter(
-                        EventQueryForm.Field.CITY,
-                        EventQueryForm.Operator.EQ,
+                .filter(new ConferenceQueryForm.Filter(
+                        ConferenceQueryForm.Field.CITY,
+                        ConferenceQueryForm.Operator.EQ,
                         "San Francisco"
                 ))
-                .filter(new EventQueryForm.Filter(
-                        EventQueryForm.Field.MONTH,
-                        EventQueryForm.Operator.EQ,
+                .filter(new ConferenceQueryForm.Filter(
+                        ConferenceQueryForm.Field.MONTH,
+                        ConferenceQueryForm.Operator.EQ,
                         "6"
                 ));
-        List<Event> conferences = conferenceApi.queryConferences(conferenceQueryForm);
+        List<Conference> conferences = conferenceApi.queryConferences(conferenceQueryForm);
         assertEquals(1, conferences.size());
         assertTrue("The result should contain conference2.", conferences.contains(conference2));
     }
@@ -187,13 +187,13 @@ public class ConferenceApiGlobalQueryTest {
     @Test
     public void testMaxAttendeesGT() throws Exception {
         // A query specifies the maxAttendees > 999.
-        EventQueryForm conferenceQueryForm = new EventQueryForm()
-                .filter(new EventQueryForm.Filter(
-                        EventQueryForm.Field.MAX_ATTENDEES,
-                        EventQueryForm.Operator.GT,
+        ConferenceQueryForm conferenceQueryForm = new ConferenceQueryForm()
+                .filter(new ConferenceQueryForm.Filter(
+                        ConferenceQueryForm.Field.MAX_ATTENDEES,
+                        ConferenceQueryForm.Operator.GT,
                         "999"
                 ));
-        List<Event> conferences = conferenceApi.queryConferences(conferenceQueryForm);
+        List<Conference> conferences = conferenceApi.queryConferences(conferenceQueryForm);
         assertEquals(2, conferences.size());
         assertTrue("The result should contain conference2.", conferences.contains(conference2));
         assertTrue("The result should contain conference3.", conferences.contains(conference3));
@@ -204,13 +204,13 @@ public class ConferenceApiGlobalQueryTest {
     @Test
     public void testMaxAttendeesLT() throws Exception {
         // A query specifies the maxAttendees > 1001.
-        EventQueryForm conferenceQueryForm = new EventQueryForm()
-                .filter(new EventQueryForm.Filter(
-                        EventQueryForm.Field.MAX_ATTENDEES,
-                        EventQueryForm.Operator.LT,
+        ConferenceQueryForm conferenceQueryForm = new ConferenceQueryForm()
+                .filter(new ConferenceQueryForm.Filter(
+                        ConferenceQueryForm.Field.MAX_ATTENDEES,
+                        ConferenceQueryForm.Operator.LT,
                         "1001"
                 ));
-        List<Event> conferences = conferenceApi.queryConferences(conferenceQueryForm);
+        List<Conference> conferences = conferenceApi.queryConferences(conferenceQueryForm);
         assertEquals(2, conferences.size());
         assertTrue("The result should contain conference1.", conferences.contains(conference1));
         assertTrue("The result should contain conference2.", conferences.contains(conference2));
@@ -221,13 +221,13 @@ public class ConferenceApiGlobalQueryTest {
     @Test
     public void testMaxAttendeesGTEQ() throws Exception {
         // A query specifies the maxAttendees >= 1000.
-        EventQueryForm conferenceQueryForm = new EventQueryForm()
-                .filter(new EventQueryForm.Filter(
-                        EventQueryForm.Field.MAX_ATTENDEES,
-                        EventQueryForm.Operator.GTEQ,
+        ConferenceQueryForm conferenceQueryForm = new ConferenceQueryForm()
+                .filter(new ConferenceQueryForm.Filter(
+                        ConferenceQueryForm.Field.MAX_ATTENDEES,
+                        ConferenceQueryForm.Operator.GTEQ,
                         "1000"
                 ));
-        List<Event> conferences = conferenceApi.queryConferences(conferenceQueryForm);
+        List<Conference> conferences = conferenceApi.queryConferences(conferenceQueryForm);
         assertEquals(2, conferences.size());
         assertTrue("The result should contain conference2.", conferences.contains(conference2));
         assertTrue("The result should contain conference3.", conferences.contains(conference3));
@@ -238,13 +238,13 @@ public class ConferenceApiGlobalQueryTest {
     @Test
     public void testMaxAttendeesLTEQ() throws Exception {
         // A query specifies the maxAttendees <= 1000.
-        EventQueryForm conferenceQueryForm = new EventQueryForm()
-                .filter(new EventQueryForm.Filter(
-                        EventQueryForm.Field.MAX_ATTENDEES,
-                        EventQueryForm.Operator.LTEQ,
+        ConferenceQueryForm conferenceQueryForm = new ConferenceQueryForm()
+                .filter(new ConferenceQueryForm.Filter(
+                        ConferenceQueryForm.Field.MAX_ATTENDEES,
+                        ConferenceQueryForm.Operator.LTEQ,
                         "1000"
                 ));
-        List<Event> conferences = conferenceApi.queryConferences(conferenceQueryForm);
+        List<Conference> conferences = conferenceApi.queryConferences(conferenceQueryForm);
         assertEquals(2, conferences.size());
         assertTrue("The result should contain conference1.", conferences.contains(conference1));
         assertTrue("The result should contain conference2.", conferences.contains(conference2));
@@ -255,13 +255,13 @@ public class ConferenceApiGlobalQueryTest {
     @Test
     public void testMaxAttendeesNE() throws Exception {
         // A query specifies the maxAttendees != 1000.
-        EventQueryForm conferenceQueryForm = new EventQueryForm()
-                .filter(new EventQueryForm.Filter(
-                        EventQueryForm.Field.MAX_ATTENDEES,
-                        EventQueryForm.Operator.NE,
+        ConferenceQueryForm conferenceQueryForm = new ConferenceQueryForm()
+                .filter(new ConferenceQueryForm.Filter(
+                        ConferenceQueryForm.Field.MAX_ATTENDEES,
+                        ConferenceQueryForm.Operator.NE,
                         "1000"
                 ));
-        List<Event> conferences = conferenceApi.queryConferences(conferenceQueryForm);
+        List<Conference> conferences = conferenceApi.queryConferences(conferenceQueryForm);
         assertEquals(2, conferences.size());
         assertTrue("The result should contain conference1.", conferences.contains(conference1));
         assertTrue("The result should contain conference3.", conferences.contains(conference3));
@@ -272,15 +272,15 @@ public class ConferenceApiGlobalQueryTest {
     @Test(expected = IllegalArgumentException.class)
     public void testMultipleInequalityFilter() throws Exception {
         // A query specifies the maxAttendees <= 1000 and month != 6.
-        EventQueryForm conferenceQueryForm = new EventQueryForm()
-                .filter(new EventQueryForm.Filter(
-                        EventQueryForm.Field.MAX_ATTENDEES,
-                        EventQueryForm.Operator.LTEQ,
+        ConferenceQueryForm conferenceQueryForm = new ConferenceQueryForm()
+                .filter(new ConferenceQueryForm.Filter(
+                        ConferenceQueryForm.Field.MAX_ATTENDEES,
+                        ConferenceQueryForm.Operator.LTEQ,
                         "1000"
                 ))
-                .filter(new EventQueryForm.Filter(
-                        EventQueryForm.Field.MONTH,
-                        EventQueryForm.Operator.NE,
+                .filter(new ConferenceQueryForm.Filter(
+                        ConferenceQueryForm.Field.MONTH,
+                        ConferenceQueryForm.Operator.NE,
                         "6"
                 ));
     }

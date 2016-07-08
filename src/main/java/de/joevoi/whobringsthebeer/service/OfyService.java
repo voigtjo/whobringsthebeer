@@ -4,6 +4,7 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 
+import de.joevoi.whobringsthebeer.domain.Conference;
 import de.joevoi.whobringsthebeer.domain.Event;
 import de.joevoi.whobringsthebeer.domain.Group;
 import de.joevoi.whobringsthebeer.domain.Profile;
@@ -16,9 +17,10 @@ public class OfyService {
      * This static block ensure the entity registration.
      */
     static {
-        factory().register(Event.class);
+        factory().register(Conference.class);
         factory().register(Profile.class);
         factory().register(Group.class);
+        factory().register(Event.class);
     }
 
     /**

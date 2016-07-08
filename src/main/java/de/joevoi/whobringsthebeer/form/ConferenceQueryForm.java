@@ -2,23 +2,23 @@ package de.joevoi.whobringsthebeer.form;
 
 import static de.joevoi.whobringsthebeer.service.OfyService.ofy;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.ApiResourceProperty;
 import com.google.common.collect.ImmutableList;
 import com.googlecode.objectify.cmd.Query;
 
-import de.joevoi.whobringsthebeer.domain.Event;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
+import de.joevoi.whobringsthebeer.domain.Conference;
 
 /**
  * A simple Java object (POJO) representing a query options for Conference.
  */
-public class EventQueryForm {
+public class ConferenceQueryForm {
 
-    private static final Logger LOG = Logger.getLogger(EventQueryForm.class.getName());
+    private static final Logger LOG = Logger.getLogger(ConferenceQueryForm.class.getName());
 
     /**
      * Enum representing a field type.
@@ -117,7 +117,7 @@ public class EventQueryForm {
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private Filter inequalityFilter;
 
-    public EventQueryForm() {}
+    public ConferenceQueryForm() {}
 
     /**
      * Checks the feasibility of the whole query.
@@ -150,7 +150,7 @@ public class EventQueryForm {
      * @param filter A Filter object for the query.
      * @return this for method chaining.
      */
-    public EventQueryForm filter(Filter filter) {
+    public ConferenceQueryForm filter(Filter filter) {
         if (filter.operator.isInequalityFilter()) {
             // Only allows inequality filters on a single field.
             if (inequalityFilter != null && !inequalityFilter.field.equals(filter.field)) {
@@ -169,10 +169,10 @@ public class EventQueryForm {
      * @return an Objectify Query.
      */
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
-    public Query<Event> getQuery() {
+    public Query<Conference> getQuery() {
         // First check the feasibility of inequality filters.
         checkFilters();
-        Query<Event> query = ofy().load().type(Event.class);
+        Query<Conference> query = ofy().load().type(Conference.class);
         if (inequalityFilter == null) {
             // Order by name.
             query = query.order("name");

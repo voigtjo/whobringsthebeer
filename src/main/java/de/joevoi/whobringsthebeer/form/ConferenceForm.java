@@ -1,14 +1,14 @@
 package de.joevoi.whobringsthebeer.form;
 
-import com.google.common.collect.ImmutableList;
-
 import java.util.Date;
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * A simple Java object (POJO) representing a Conference form sent from the client.
  */
-public class EventForm {
+public class ConferenceForm {
     /**
      * The name of the conference.
      */
@@ -44,7 +44,7 @@ public class EventForm {
      */
     private int maxAttendees;
 
-    private EventForm() {}
+    private ConferenceForm() {}
 
     /**
      * Public constructor is solely for Unit Test.
@@ -56,7 +56,7 @@ public class EventForm {
      * @param endDate
      * @param maxAttendees
      */
-    public EventForm(String name, String description, List<String> topics, String city,
+    public ConferenceForm(String name, String description, List<String> topics, String city,
                           Date startDate, Date endDate, int maxAttendees) {
         this.name = name;
         this.description = description;

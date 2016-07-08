@@ -28,6 +28,18 @@ var app = angular.module('conferenceApp',
                     templateUrl: '/partials/conference_detail.html',
                     controller: 'ConferenceDetailCtrl'
                 }).
+                when('/group', {
+                    templateUrl: '/partials/show_groups.html',
+                    controller: 'ShowGroupCtrl'
+                }).
+                when('/group/create', {
+                    templateUrl: '/partials/create_group.html',
+                    controller: 'CreateGroupCtrl'
+                }).
+                when('/group/detail/:websafeGroupKey', {
+                    templateUrl: '/partials/group_detail.html',
+                    controller: 'GroupDetailCtrl'
+                }).
                 when('/profile', {
                     templateUrl: '/partials/profile.html',
                     controller: 'MyProfileCtrl'
@@ -86,7 +98,7 @@ app.constant('HTTP_ERRORS', {
  */
 app.factory('oauth2Provider', function ($modal) {
     var oauth2Provider = {
-        CLIENT_ID: '325937508127-2bh9ojfp1ri6eib9bgtmk7q8cfoj69gf.apps.googleusercontent.com',
+        CLIENT_ID: '325937508127-gat4sm45d23j0ksl7um0r63ahvtje4ek.apps.googleusercontent.com',
         SCOPES: 'https://www.googleapis.com/auth/userinfo.email profile',
         signedIn: false
     };

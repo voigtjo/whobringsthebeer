@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/5-Y5gFflBdnyNqAl_FJro_Aq15w\"",
+ "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/BH4V1-A6GrnYlzbbC5JtwzkhLiI\"",
  "discoveryVersion": "v1",
  "id": "conference:v1",
  "name": "conference",
@@ -71,8 +71,8 @@
   }
  },
  "schemas": {
-  "Event": {
-   "id": "Event",
+  "Conference": {
+   "id": "Conference",
    "type": "object",
    "properties": {
     "city": {
@@ -122,20 +122,20 @@
     }
    }
   },
-  "EventCollection": {
-   "id": "EventCollection",
+  "ConferenceCollection": {
+   "id": "ConferenceCollection",
    "type": "object",
    "properties": {
     "items": {
      "type": "array",
      "items": {
-      "$ref": "Event"
+      "$ref": "Conference"
      }
     }
    }
   },
-  "EventForm": {
-   "id": "EventForm",
+  "ConferenceForm": {
+   "id": "ConferenceForm",
    "type": "object",
    "properties": {
     "city": {
@@ -167,8 +167,8 @@
     }
    }
   },
-  "EventQueryForm": {
-   "id": "EventQueryForm",
+  "ConferenceQueryForm": {
+   "id": "ConferenceQueryForm",
    "type": "object",
    "properties": {
     "filters": {
@@ -243,6 +243,18 @@
     "displayName": {
      "type": "string"
     },
+    "eventKeysToAttend": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "groupKeysMemberOf": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
     "mainEmail": {
      "type": "string"
     },
@@ -309,11 +321,11 @@
    "path": "conference",
    "httpMethod": "POST",
    "request": {
-    "$ref": "EventForm",
+    "$ref": "ConferenceForm",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "Event"
+    "$ref": "Conference"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -334,7 +346,7 @@
     "websafeConferenceKey"
    ],
    "response": {
-    "$ref": "Event"
+    "$ref": "Conference"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -345,7 +357,7 @@
    "path": "getConferencesCreated",
    "httpMethod": "POST",
    "response": {
-    "$ref": "EventCollection"
+    "$ref": "ConferenceCollection"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -356,7 +368,7 @@
    "path": "getConferencesToAttend",
    "httpMethod": "GET",
    "response": {
-    "$ref": "EventCollection"
+    "$ref": "ConferenceCollection"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -378,11 +390,11 @@
    "path": "queryConferences",
    "httpMethod": "POST",
    "request": {
-    "$ref": "EventQueryForm",
+    "$ref": "ConferenceQueryForm",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "EventCollection"
+    "$ref": "ConferenceCollection"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -393,7 +405,7 @@
    "path": "queryConferences_nofilters",
    "httpMethod": "POST",
    "response": {
-    "$ref": "EventCollection"
+    "$ref": "ConferenceCollection"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -458,14 +470,14 @@
   }
  },
  "resources": {
-  "eventApi": {
+  "conferenceApi": {
    "methods": {
     "filterPlayground": {
-     "id": "conference.eventApi.filterPlayground",
+     "id": "conference.conferenceApi.filterPlayground",
      "path": "filterPlayground",
      "httpMethod": "POST",
      "response": {
-      "$ref": "EventCollection"
+      "$ref": "ConferenceCollection"
      },
      "scopes": [
       "https://www.googleapis.com/auth/userinfo.email"
