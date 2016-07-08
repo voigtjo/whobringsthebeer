@@ -36,6 +36,9 @@ public class Group {
     
     @Index
     private List<String> memberKeys = new ArrayList<>(0);
+    
+    @Index
+    private List<String> eventKeys = new ArrayList<>(0);
 
 	public Group() {
 		super();
@@ -94,6 +97,10 @@ public class Group {
 		return memberKeys == null ? null : ImmutableList.copyOf(memberKeys);
 	}
 	
+	public List<String> getEventKeys() {
+		return eventKeys == null ? null : ImmutableList.copyOf(eventKeys);
+	}
+	
     public void update(String name, String description){
     	if (name != null) {
             this.name = name;
@@ -106,12 +113,24 @@ public class Group {
     public void addMemberToGroup(String memberKey) {
     	memberKeys.add(memberKey);
     }
+    
+    public void addEventToGroup(String eventKey) {
+    	eventKeys.add(eventKey);
+    }
 
     public void unregisterMemberFromGroup(String memberKey) {
         if (memberKeys.contains(memberKey)) {
         	memberKeys.remove(memberKey);
         } else {
             throw new IllegalArgumentException("Invalid memberKey: " + memberKey);
+        }
+    }
+    
+    public void unregisterEventFromGroup(String eventKey) {
+        if (eventKeys.contains(eventKey)) {
+        	eventKeys.remove(eventKey);
+        } else {
+            throw new IllegalArgumentException("Invalid eventKey: " + eventKey);
         }
     }
     

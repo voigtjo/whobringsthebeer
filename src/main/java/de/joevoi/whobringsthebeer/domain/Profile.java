@@ -12,9 +12,12 @@ import de.joevoi.whobringsthebeer.form.ProfileForm.TeeShirtSize;
 
 
 // TODO indicate that this class is an Entity
+/**
+ * @author j.voigt
+ *
+ */
 @Entity
 @Cache
-
 public class Profile {
     String displayName;
     String mainEmail;
@@ -26,6 +29,7 @@ public class Profile {
     /**
      * Keys of the conferences that this user registers to attend.
      */
+    private List<String> eventKeysToAttend = new ArrayList<>(0);
     private List<String> conferenceKeysToAttend = new ArrayList<>(0);
     private List<String> groupKeysMemberOf = new ArrayList<>(0);
 
@@ -68,6 +72,10 @@ public class Profile {
         return ImmutableList.copyOf(conferenceKeysToAttend);
     }
     
+    public List<String> getEventKeysToAttend() {
+        return ImmutableList.copyOf(eventKeysToAttend);
+    }
+    
     public List<String> getGroupKeysMemberOf() {
         return ImmutableList.copyOf(groupKeysMemberOf);
     }
@@ -103,6 +111,10 @@ public class Profile {
     public void addToConferenceKeysToAttend(String conferenceKey) {
         conferenceKeysToAttend.add(conferenceKey);
     }
+    
+    public void addToEventKeysToAttend(String eventKey) {
+        eventKeysToAttend.add(eventKey);
+    }
 
     /**
      * Remove the conferenceId from conferenceIdsToAttend.
@@ -117,6 +129,14 @@ public class Profile {
         }
     }
     
+    public void unregisterFromEvent(String eventKey) {
+        if (eventKeysToAttend.contains(eventKey)) {
+        	eventKeysToAttend.remove(eventKey);
+        } else {
+            throw new IllegalArgumentException("Invalid eventKey: " + eventKey);
+        }
+    }
+    
     public void addToGroupKeysMemberOf(String groupKey) {
     	groupKeysMemberOf.add(groupKey);
     }
@@ -128,5 +148,13 @@ public class Profile {
             throw new IllegalArgumentException("Invalid groupKey: " + groupKey);
         }
     }
+
+	@Override
+	public String toString() {
+		return "Profile [displayName=" + displayName + ", mainEmail=" + mainEmail + ", teeShirtSize=" + teeShirtSize
+				+ ", userId=" + userId + "]";
+	}
+    
+    
 
 }

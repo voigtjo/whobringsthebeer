@@ -63,6 +63,7 @@ conferenceApp.controllers.controller('MyProfileCtrl',
                             $scope.loading = false;
                             if (resp.error) {
                                 // Failed to get a user profile.
+                            	console.log("Failed to get a user profile: " + JSON.stringify(resp.error));
                             } else {
                                 // Succeeded to get the user profile.
                                 $scope.profile.displayName = resp.result.displayName;

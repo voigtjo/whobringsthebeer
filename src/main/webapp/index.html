@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Event Mgmt v0.2.3</title>
+    <title>Event Mgmt v0.2.6</title>
 
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-cosmo.css">
@@ -28,6 +28,7 @@
          */
         function init() {
             gapi.client.load('conference', 'v1', null, '//' + window.location.host + '/_ah/api');
+            gapi.client.load('event', 'v1', null, '//' + window.location.host + '/_ah/api');
             gapi.client.load('group', 'v1', null, '//' + window.location.host + '/_ah/api');
             gapi.client.load('oauth2', 'v2', function () {
                 angular.bootstrap(document, ['conferenceApp']);
@@ -49,7 +50,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Event Mgmt v0.2.3</a>
+            <a class="navbar-brand" href="/">Event Mgmt v0.2.6</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
