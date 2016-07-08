@@ -27,6 +27,7 @@ public class Profile {
      * Keys of the conferences that this user registers to attend.
      */
     private List<String> conferenceKeysToAttend = new ArrayList<>(0);
+    private List<String> groupKeysMemberOf = new ArrayList<>(0);
 
     /**
      * Public constructor for Profile.
@@ -65,6 +66,10 @@ public class Profile {
      */
     public List<String> getConferenceKeysToAttend() {
         return ImmutableList.copyOf(conferenceKeysToAttend);
+    }
+    
+    public List<String> getGroupKeysMemberOf() {
+        return ImmutableList.copyOf(groupKeysMemberOf);
     }
 
     /**
@@ -109,6 +114,18 @@ public class Profile {
             conferenceKeysToAttend.remove(conferenceKey);
         } else {
             throw new IllegalArgumentException("Invalid conferenceKey: " + conferenceKey);
+        }
+    }
+    
+    public void addToGroupKeysMemberOf(String groupKey) {
+    	groupKeysMemberOf.add(groupKey);
+    }
+    
+    public void removeFromGroupKeysMemberOf(String groupKey) {
+        if (groupKeysMemberOf.contains(groupKey)) {
+        	groupKeysMemberOf.remove(groupKey);
+        } else {
+            throw new IllegalArgumentException("Invalid groupKey: " + groupKey);
         }
     }
 

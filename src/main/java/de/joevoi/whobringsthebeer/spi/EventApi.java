@@ -195,7 +195,7 @@ public class EventApi {
         final Key<Event> conferenceKey = factory().allocateId(profileKey, Event.class);
         final long conferenceId = conferenceKey.getId();
 //        final Queue queue = QueueFactory.getDefaultQueue();
-        final Queue queue = QueueFactory.getQueue("email-queue");
+//        final Queue queue = QueueFactory.getQueue("email-queue");
 
         
         // Start a transaction.
@@ -210,10 +210,10 @@ public class EventApi {
                 // Save Conference and Profile.
                 ofy().save().entities(conference, profile).now();
                 LOG.warning("Create Conference: email= " + profile.getMainEmail() + ", conf= " + conference.toString());
-                queue.add(ofy().getTransaction(),
-                        TaskOptions.Builder.withUrl("/tasks/send_confirmation_email")
-                        .param("email", profile.getMainEmail())
-                        .param("conferenceInfo", conference.toString()));
+//                queue.add(ofy().getTransaction(),
+//                        TaskOptions.Builder.withUrl("/tasks/send_confirmation_email")
+//                        .param("email", profile.getMainEmail())
+//                        .param("conferenceInfo", conference.toString()));
                 return conference;
             }
         });
