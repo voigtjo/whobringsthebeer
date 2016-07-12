@@ -12,7 +12,7 @@
  *
  */
 
-var app = angular.module('conferenceApp',['conferenceControllers', 'eventControllers', 'ngRoute', 'ui.bootstrap']);
+var app = angular.module('conferenceApp',['conferenceControllers', 'rootControllers', 'profileControllers', 'conferenceControllers', 'eventControllers', 'groupControllers', 'ngRoute', 'ui.bootstrap']);
 app.config(['$routeProvider',
         function ($routeProvider) {
             $routeProvider.

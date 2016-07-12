@@ -1,7 +1,5 @@
 'use strict';
-///////////////////////////////////////////////////////////
 
-///###///
 var eventAppControllers = angular.module('eventControllers',['ui.bootstrap']);
 
 eventAppControllers.controller('ShowEventCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {

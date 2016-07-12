@@ -1,0 +1,255 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://whobringsthebeer.appspot.com/_ah/api",
+  "name" : "group",
+  "version" : "v1",
+  "description" : "group API for the WhoBringsTheBeer Backend application.",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://whobringsthebeer.appspot.com/_ah/spi",
+    "deadline" : 65.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "methods" : {
+    "group.getAllGroups" : {
+      "path" : "getAllGroups",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.GroupApi.getAllGroups",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "group.saveGroup" : {
+      "path" : "saveGroup",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.GroupApi.saveGroup",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "group.addMemberToGroup" : {
+      "path" : "group/{websafeGroupKey}/addMember",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.GroupApi.addMemberToGroup",
+      "request" : {
+        "parameters" : {
+          "websafeGroupKey" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "group.getGroupsCreated" : {
+      "path" : "getGroupsCreated",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.GroupApi.getGroupsCreated",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "group.getGroup" : {
+      "path" : "group/{websafeGroupKey}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.GroupApi.getGroup",
+      "request" : {
+        "parameters" : {
+          "websafeGroupKey" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "group.getGroupsMemberOf" : {
+      "path" : "getGroupsMemberOf",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.GroupApi.getGroupsMemberOf",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "group.removeMemberFromGroup" : {
+      "path" : "group/{websafeGroupKey}/removeMember",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.GroupApi.removeMemberFromGroup",
+      "request" : {
+        "parameters" : {
+          "websafeGroupKey" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "Group" : {
+        "id" : "Group",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "memberKeys" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "eventKeys" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "organizerDisplayName" : {
+            "type" : "string"
+          },
+          "websafeKey" : {
+            "type" : "string"
+          }
+        }
+      },
+      "GroupCollection" : {
+        "id" : "GroupCollection",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Group"
+            }
+          }
+        }
+      },
+      "WrappedBoolean" : {
+        "id" : "WrappedBoolean",
+        "type" : "object",
+        "properties" : {
+          "result" : {
+            "type" : "boolean"
+          },
+          "reason" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "methods" : {
+      "de.joevoi.whobringsthebeer.spi.GroupApi.getAllGroups" : {
+        "response" : {
+          "$ref" : "GroupCollection"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.GroupApi.saveGroup" : {
+        "request" : {
+          "$ref" : "Group"
+        },
+        "response" : {
+          "$ref" : "Group"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.GroupApi.addMemberToGroup" : {
+        "response" : {
+          "$ref" : "WrappedBoolean"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.GroupApi.getGroupsCreated" : {
+        "response" : {
+          "$ref" : "GroupCollection"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.GroupApi.getGroup" : {
+        "response" : {
+          "$ref" : "Group"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.GroupApi.getGroupsMemberOf" : {
+        "response" : {
+          "$ref" : "GroupCollection"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.GroupApi.removeMemberFromGroup" : {
+        "response" : {
+          "$ref" : "WrappedBoolean"
+        }
+      }
+    }
+  }
+}

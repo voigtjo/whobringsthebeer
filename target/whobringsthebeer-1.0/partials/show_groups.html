@@ -55,7 +55,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="group in groups | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize">
-                        <td><a href="#/group/detail/{{group.websafeKey}}">Details</a></td>
+                        <td><a href="#/group/detail/{{group.websafeKey}}">{{group.websafeKey}}</a></td>
                         <td>{{group.name}}</td>
                         <td>{{group.description}}</td>
                         <td>{{group.organizerDisplayName}}</td>

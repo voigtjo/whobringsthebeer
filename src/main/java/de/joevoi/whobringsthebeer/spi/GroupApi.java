@@ -41,20 +41,25 @@ public class GroupApi {
 
 
 	@ApiMethod(name = "saveGroup", path = "saveGroup", httpMethod = HttpMethod.POST)
-	public Group saveGroup(final User user, @Named("name") final String name, @Named("description") final String description) throws UnauthorizedException {
+	public Group saveGroup(final User user, Group group) throws UnauthorizedException {
 		LOG.warning("saveGroup ...");
 		if (user == null) {
 			throw new UnauthorizedException("Authorization required");
 		}
 		// Allocate Id first, in order to make the transaction idempotent.
 		final String userId = user.getUserId();
+		final String name = group.getName();
+		final String description = group.getDescription();
+		LOG.info("Create Event: user= " + userId);
+		
 		Key<Profile> profileKey = Key.create(Profile.class, userId);
 		final Key<Group> groupKey = factory().allocateId(profileKey, Group.class);
 		final long groupId = groupKey.getId();
 
+		LOG.info("name= " + name + ", description= " + description);
 
 		// Start a transaction.
-		Group group = ofy().transact(new Work<Group>() {
+		Group groupDb = ofy().transact(new Work<Group>() {
 			@Override
 			public Group run() {
 				LOG.warning("Save group: run ...");
@@ -66,7 +71,7 @@ public class GroupApi {
 				return group;
 			}
 		});
-		return group;
+		return groupDb;
 	}
 
 	@ApiMethod(name = "getAllGroups",path = "getAllGroups", httpMethod = HttpMethod.POST)

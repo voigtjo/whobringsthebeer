@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/7IhjG-8VmFChklfsmJ7VgJ4GKbo\"",
+ "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/_MsritS4zOaeq0tT5fmlVMqscVQ\"",
  "discoveryVersion": "v1",
  "id": "event:v1",
  "name": "event",
@@ -77,6 +77,9 @@
      "type": "string",
      "format": "date-time"
     },
+    "groupDisplayName": {
+     "type": "string"
+    },
     "id": {
      "type": "string",
      "format": "int64"
@@ -91,6 +94,9 @@
      }
     },
     "organizerDisplayName": {
+     "type": "string"
+    },
+    "websafeGroupKey": {
      "type": "string"
     },
     "websafeKey": {
@@ -110,8 +116,8 @@
     }
    }
   },
-  "EventForm": {
-   "id": "EventForm",
+  "EventStructureForm": {
+   "id": "EventStructureForm",
    "type": "object",
    "properties": {
     "eventDate": {
@@ -120,6 +126,55 @@
     },
     "location": {
      "type": "string"
+    },
+    "websafeGroupKey": {
+     "type": "string"
+    }
+   }
+  },
+  "Group": {
+   "id": "Group",
+   "type": "object",
+   "properties": {
+    "description": {
+     "type": "string"
+    },
+    "eventKeys": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "memberKeys": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "name": {
+     "type": "string"
+    },
+    "organizerDisplayName": {
+     "type": "string"
+    },
+    "websafeKey": {
+     "type": "string"
+    }
+   }
+  },
+  "GroupCollection": {
+   "id": "GroupCollection",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "Group"
+     }
     }
    }
   },
@@ -197,23 +252,10 @@
   }
  },
  "methods": {
-  "event.createEvent": {
-   "id": "event.createEvent",
-   "parameters": {
-    "resource": {
-     "$ref": "EventForm"
-    },
-    "websafeGroupKey": {
-     "type": "string",
-     "required": true
-    }
-   },
-   "parameterOrder": [
-    "resource",
-    "websafeGroupKey"
-   ],
+  "event.getAllEvents": {
+   "id": "event.getAllEvents",
    "returns": {
-    "$ref": "Event"
+    "$ref": "EventCollection"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -233,6 +275,15 @@
    ],
    "returns": {
     "$ref": "Event"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "event.getEventsCreated": {
+   "id": "event.getEventsCreated",
+   "returns": {
+    "$ref": "GroupCollection"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -266,20 +317,21 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "event.getProfile": {
-   "id": "event.getProfile",
+  "event.getGroupsMemberOf": {
+   "id": "event.getGroupsMemberOf",
    "allowGet": true,
    "returns": {
-    "$ref": "Profile"
+    "$ref": "GroupCollection"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "event.queryEvents_nofilters": {
-   "id": "event.queryEvents_nofilters",
+  "event.getProfile": {
+   "id": "event.getProfile",
+   "allowGet": true,
    "returns": {
-    "$ref": "EventCollection"
+    "$ref": "Profile"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -298,6 +350,23 @@
    ],
    "returns": {
     "$ref": "WrappedBoolean"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "event.saveEvent": {
+   "id": "event.saveEvent",
+   "parameters": {
+    "resource": {
+     "$ref": "EventStructureForm"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "Event"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
