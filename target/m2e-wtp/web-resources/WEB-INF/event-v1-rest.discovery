@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/7IhjG-8VmFChklfsmJ7VgJ4GKbo\"",
+ "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/_MsritS4zOaeq0tT5fmlVMqscVQ\"",
  "discoveryVersion": "v1",
  "id": "event:v1",
  "name": "event",
@@ -79,6 +79,9 @@
      "type": "string",
      "format": "date-time"
     },
+    "groupDisplayName": {
+     "type": "string"
+    },
     "id": {
      "type": "string",
      "format": "int64"
@@ -93,6 +96,9 @@
      }
     },
     "organizerDisplayName": {
+     "type": "string"
+    },
+    "websafeGroupKey": {
      "type": "string"
     },
     "websafeKey": {
@@ -112,8 +118,8 @@
     }
    }
   },
-  "EventForm": {
-   "id": "EventForm",
+  "EventStructureForm": {
+   "id": "EventStructureForm",
    "type": "object",
    "properties": {
     "eventDate": {
@@ -122,6 +128,55 @@
     },
     "location": {
      "type": "string"
+    },
+    "websafeGroupKey": {
+     "type": "string"
+    }
+   }
+  },
+  "Group": {
+   "id": "Group",
+   "type": "object",
+   "properties": {
+    "description": {
+     "type": "string"
+    },
+    "eventKeys": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "memberKeys": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "name": {
+     "type": "string"
+    },
+    "organizerDisplayName": {
+     "type": "string"
+    },
+    "websafeKey": {
+     "type": "string"
+    }
+   }
+  },
+  "GroupCollection": {
+   "id": "GroupCollection",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "Group"
+     }
     }
    }
   },
@@ -199,26 +254,12 @@
   }
  },
  "methods": {
-  "createEvent": {
-   "id": "event.createEvent",
-   "path": "event",
+  "getAllEvents": {
+   "id": "event.getAllEvents",
+   "path": "getAllEvents",
    "httpMethod": "POST",
-   "parameters": {
-    "websafeGroupKey": {
-     "type": "string",
-     "required": true,
-     "location": "query"
-    }
-   },
-   "parameterOrder": [
-    "websafeGroupKey"
-   ],
-   "request": {
-    "$ref": "EventForm",
-    "parameterName": "resource"
-   },
    "response": {
-    "$ref": "Event"
+    "$ref": "EventCollection"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -245,9 +286,20 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "getEventsCreated": {
+   "id": "event.getEventsCreated",
+   "path": "getEventsCreated",
+   "httpMethod": "POST",
+   "response": {
+    "$ref": "GroupCollection"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "getEventsOfGroup": {
    "id": "event.getEventsOfGroup",
-   "path": "getEventsCreated",
+   "path": "getEventsOfGroup",
    "httpMethod": "POST",
    "parameters": {
     "websafeGroupKey": {
@@ -277,23 +329,23 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "getGroupsMemberOf": {
+   "id": "event.getGroupsMemberOf",
+   "path": "getGroupsMemberOf",
+   "httpMethod": "GET",
+   "response": {
+    "$ref": "GroupCollection"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "getProfile": {
    "id": "event.getProfile",
    "path": "profile",
    "httpMethod": "GET",
    "response": {
     "$ref": "Profile"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
-  "queryEvents_nofilters": {
-   "id": "event.queryEvents_nofilters",
-   "path": "queryEvents_nofilters",
-   "httpMethod": "POST",
-   "response": {
-    "$ref": "EventCollection"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -315,6 +367,21 @@
    ],
    "response": {
     "$ref": "WrappedBoolean"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "saveEvent": {
+   "id": "event.saveEvent",
+   "path": "saveEvent",
+   "httpMethod": "POST",
+   "request": {
+    "$ref": "EventStructureForm",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "Event"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

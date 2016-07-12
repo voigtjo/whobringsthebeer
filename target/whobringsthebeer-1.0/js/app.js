@@ -11,9 +11,9 @@
  * Root app, which routes and specifies the partial html and controller depending on the url requested.
  *
  */
-var app = angular.module('conferenceApp',
-    ['conferenceControllers', 'ngRoute', 'ui.bootstrap']).
-    config(['$routeProvider',
+
+var app = angular.module('conferenceApp',['conferenceControllers', 'rootControllers', 'profileControllers', 'conferenceControllers', 'eventControllers', 'groupControllers', 'ngRoute', 'ui.bootstrap']);
+app.config(['$routeProvider',
         function ($routeProvider) {
             $routeProvider.
                 when('/conference', {
@@ -39,6 +39,18 @@ var app = angular.module('conferenceApp',
                 when('/group/detail/:websafeGroupKey', {
                     templateUrl: '/partials/group_detail.html',
                     controller: 'GroupDetailCtrl'
+                }).
+                when('/event', {
+                    templateUrl: '/partials/show_events.html',
+                    controller: 'ShowEventCtrl'
+                }).
+                when('/event/create', {
+                    templateUrl: '/partials/create_event.html',
+                    controller: 'CreateEventCtrl'
+                }).
+                when('/event/detail/:websafeEventKey', {
+                    templateUrl: '/partials/event_detail.html',
+                    controller: 'EventDetailCtrl'
                 }).
                 when('/profile', {
                     templateUrl: '/partials/profile.html',
@@ -98,7 +110,7 @@ app.constant('HTTP_ERRORS', {
  */
 app.factory('oauth2Provider', function ($modal) {
     var oauth2Provider = {
-        CLIENT_ID: '325937508127-gat4sm45d23j0ksl7um0r63ahvtje4ek.apps.googleusercontent.com',
+        CLIENT_ID: '325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com',
         SCOPES: 'https://www.googleapis.com/auth/userinfo.email profile',
         signedIn: false
     };

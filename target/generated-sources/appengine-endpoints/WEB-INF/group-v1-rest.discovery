@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/apo2tc4qugD30wMs7NqhMxYBmv0\"",
+ "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/WjLbKjiHGtXA5vYLo7hTc-XGxrU\"",
  "discoveryVersion": "v1",
  "id": "group:v1",
  "name": "group",
@@ -231,22 +231,10 @@
    "id": "group.saveGroup",
    "path": "saveGroup",
    "httpMethod": "POST",
-   "parameters": {
-    "description": {
-     "type": "string",
-     "required": true,
-     "location": "query"
-    },
-    "name": {
-     "type": "string",
-     "required": true,
-     "location": "query"
-    }
+   "request": {
+    "$ref": "Group",
+    "parameterName": "resource"
    },
-   "parameterOrder": [
-    "description",
-    "name"
-   ],
    "response": {
     "$ref": "Group"
    },

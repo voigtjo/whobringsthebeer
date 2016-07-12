@@ -31,8 +31,8 @@
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
-      "clientIds" : [ "325937508127-gat4sm45d23j0ksl7um0r63ahvtje4ek.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.EventApi.saveProfile",
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.ConferenceApi.saveProfile",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -41,47 +41,16 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "conference.getProfile" : {
-      "path" : "profile",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "325937508127-gat4sm45d23j0ksl7um0r63ahvtje4ek.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.EventApi.getProfile",
-      "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "conference.eventApi.filterPlayground" : {
+    "conference.conferenceApi.filterPlayground" : {
       "path" : "filterPlayground",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
-      "clientIds" : [ "325937508127-gat4sm45d23j0ksl7um0r63ahvtje4ek.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.EventApi.filterPlayground",
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.ConferenceApi.filterPlayground",
       "request" : {
         "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "conference.createConference" : {
-      "path" : "conference",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "325937508127-gat4sm45d23j0ksl7um0r63ahvtje4ek.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.EventApi.createConference",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -93,8 +62,24 @@
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
-      "clientIds" : [ "325937508127-gat4sm45d23j0ksl7um0r63ahvtje4ek.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.EventApi.queryConferences",
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.ConferenceApi.queryConferences",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "conference.createConference" : {
+      "path" : "conference",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.ConferenceApi.createConference",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -109,8 +94,74 @@
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
-      "clientIds" : [ "325937508127-gat4sm45d23j0ksl7um0r63ahvtje4ek.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.EventApi.getConference",
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.ConferenceApi.getConference",
+      "request" : {
+        "parameters" : {
+          "websafeConferenceKey" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "conference.getProfile" : {
+      "path" : "profile",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.ConferenceApi.getProfile",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "conference.getConferencesToAttend" : {
+      "path" : "getConferencesToAttend",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.ConferenceApi.getConferencesToAttend",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "conference.getConferencesCreated" : {
+      "path" : "getConferencesCreated",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.ConferenceApi.getConferencesCreated",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "conference.registerForConference" : {
+      "path" : "conference/{websafeConferenceKey}/registration",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.ConferenceApi.registerForConference",
       "request" : {
         "parameters" : {
           "websafeConferenceKey" : {
@@ -130,8 +181,8 @@
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
-      "clientIds" : [ "325937508127-gat4sm45d23j0ksl7um0r63ahvtje4ek.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.EventApi.unregisterFromConference",
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.ConferenceApi.unregisterFromConference",
       "request" : {
         "parameters" : {
           "websafeConferenceKey" : {
@@ -139,21 +190,6 @@
             "required" : true
           }
         },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "conference.getConferencesToAttend" : {
-      "path" : "getConferencesToAttend",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "325937508127-gat4sm45d23j0ksl7um0r63ahvtje4ek.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.EventApi.getConferencesToAttend",
-      "request" : {
         "body" : "empty"
       },
       "response" : {
@@ -166,45 +202,9 @@
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
-      "clientIds" : [ "325937508127-gat4sm45d23j0ksl7um0r63ahvtje4ek.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.EventApi.queryConferences_nofilters",
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.ConferenceApi.queryConferences_nofilters",
       "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "conference.getConferencesCreated" : {
-      "path" : "getConferencesCreated",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "325937508127-gat4sm45d23j0ksl7um0r63ahvtje4ek.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.EventApi.getConferencesCreated",
-      "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "conference.registerForConference" : {
-      "path" : "conference/{websafeConferenceKey}/registration",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "325937508127-gat4sm45d23j0ksl7um0r63ahvtje4ek.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.EventApi.registerForConference",
-      "request" : {
-        "parameters" : {
-          "websafeConferenceKey" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
         "body" : "empty"
       },
       "response" : {
@@ -247,7 +247,19 @@
           "userId" : {
             "type" : "string"
           },
+          "eventKeysToAttend" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
           "conferenceKeysToAttend" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "groupKeysMemberOf" : {
             "type" : "array",
             "items" : {
               "type" : "string"
@@ -255,8 +267,8 @@
           }
         }
       },
-      "Event" : {
-        "id" : "Event",
+      "Conference" : {
+        "id" : "Conference",
         "type" : "object",
         "properties" : {
           "id" : {
@@ -295,60 +307,28 @@
           "seatsAvailable" : {
             "type" : "integer"
           },
-          "websafeKey" : {
+          "organizerDisplayName" : {
             "type" : "string"
           },
-          "organizerDisplayName" : {
+          "websafeKey" : {
             "type" : "string"
           }
         }
       },
-      "EventCollection" : {
-        "id" : "EventCollection",
+      "ConferenceCollection" : {
+        "id" : "ConferenceCollection",
         "type" : "object",
         "properties" : {
           "items" : {
             "type" : "array",
             "items" : {
-              "$ref" : "Event"
+              "$ref" : "Conference"
             }
           }
         }
       },
-      "EventForm" : {
-        "id" : "EventForm",
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          },
-          "description" : {
-            "type" : "string"
-          },
-          "topics" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "city" : {
-            "type" : "string"
-          },
-          "startDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "endDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "maxAttendees" : {
-            "type" : "integer"
-          }
-        }
-      },
-      "EventQueryForm" : {
-        "id" : "EventQueryForm",
+      "ConferenceQueryForm" : {
+        "id" : "ConferenceQueryForm",
         "type" : "object",
         "properties" : {
           "filters" : {
@@ -384,6 +364,38 @@
         "type" : "string",
         "enum" : [ "EQ", "LT", "GT", "LTEQ", "GTEQ", "NE" ]
       },
+      "ConferenceForm" : {
+        "id" : "ConferenceForm",
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "topics" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "city" : {
+            "type" : "string"
+          },
+          "startDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "endDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "maxAttendees" : {
+            "type" : "integer"
+          }
+        }
+      },
       "WrappedBoolean" : {
         "id" : "WrappedBoolean",
         "type" : "object",
@@ -398,7 +410,7 @@
       }
     },
     "methods" : {
-      "de.joevoi.whobringsthebeer.spi.EventApi.saveProfile" : {
+      "de.joevoi.whobringsthebeer.spi.ConferenceApi.saveProfile" : {
         "request" : {
           "$ref" : "ProfileForm"
         },
@@ -406,60 +418,60 @@
           "$ref" : "Profile"
         }
       },
-      "de.joevoi.whobringsthebeer.spi.EventApi.getProfile" : {
+      "de.joevoi.whobringsthebeer.spi.ConferenceApi.filterPlayground" : {
+        "response" : {
+          "$ref" : "ConferenceCollection"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.ConferenceApi.queryConferences" : {
+        "request" : {
+          "$ref" : "ConferenceQueryForm"
+        },
+        "response" : {
+          "$ref" : "ConferenceCollection"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.ConferenceApi.createConference" : {
+        "request" : {
+          "$ref" : "ConferenceForm"
+        },
+        "response" : {
+          "$ref" : "Conference"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.ConferenceApi.getConference" : {
+        "response" : {
+          "$ref" : "Conference"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.ConferenceApi.getProfile" : {
         "response" : {
           "$ref" : "Profile"
         }
       },
-      "de.joevoi.whobringsthebeer.spi.EventApi.filterPlayground" : {
+      "de.joevoi.whobringsthebeer.spi.ConferenceApi.getConferencesToAttend" : {
         "response" : {
-          "$ref" : "EventCollection"
+          "$ref" : "ConferenceCollection"
         }
       },
-      "de.joevoi.whobringsthebeer.spi.EventApi.createConference" : {
-        "request" : {
-          "$ref" : "EventForm"
-        },
+      "de.joevoi.whobringsthebeer.spi.ConferenceApi.getConferencesCreated" : {
         "response" : {
-          "$ref" : "Event"
+          "$ref" : "ConferenceCollection"
         }
       },
-      "de.joevoi.whobringsthebeer.spi.EventApi.queryConferences" : {
-        "request" : {
-          "$ref" : "EventQueryForm"
-        },
-        "response" : {
-          "$ref" : "EventCollection"
-        }
-      },
-      "de.joevoi.whobringsthebeer.spi.EventApi.getConference" : {
-        "response" : {
-          "$ref" : "Event"
-        }
-      },
-      "de.joevoi.whobringsthebeer.spi.EventApi.unregisterFromConference" : {
+      "de.joevoi.whobringsthebeer.spi.ConferenceApi.registerForConference" : {
         "response" : {
           "$ref" : "WrappedBoolean"
         }
       },
-      "de.joevoi.whobringsthebeer.spi.EventApi.getConferencesToAttend" : {
-        "response" : {
-          "$ref" : "EventCollection"
-        }
-      },
-      "de.joevoi.whobringsthebeer.spi.EventApi.queryConferences_nofilters" : {
-        "response" : {
-          "$ref" : "EventCollection"
-        }
-      },
-      "de.joevoi.whobringsthebeer.spi.EventApi.getConferencesCreated" : {
-        "response" : {
-          "$ref" : "EventCollection"
-        }
-      },
-      "de.joevoi.whobringsthebeer.spi.EventApi.registerForConference" : {
+      "de.joevoi.whobringsthebeer.spi.ConferenceApi.unregisterFromConference" : {
         "response" : {
           "$ref" : "WrappedBoolean"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.ConferenceApi.queryConferences_nofilters" : {
+        "response" : {
+          "$ref" : "ConferenceCollection"
         }
       }
     }

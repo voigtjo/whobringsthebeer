@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/apo2tc4qugD30wMs7NqhMxYBmv0\"",
+ "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/WjLbKjiHGtXA5vYLo7hTc-XGxrU\"",
  "discoveryVersion": "v1",
  "id": "group:v1",
  "name": "group",
@@ -215,18 +215,12 @@
   "group.saveGroup": {
    "id": "group.saveGroup",
    "parameters": {
-    "description": {
-     "type": "string",
-     "required": true
-    },
-    "name": {
-     "type": "string",
-     "required": true
+    "resource": {
+     "$ref": "Group"
     }
    },
    "parameterOrder": [
-    "description",
-    "name"
+    "resource"
    ],
    "returns": {
     "$ref": "Group"
