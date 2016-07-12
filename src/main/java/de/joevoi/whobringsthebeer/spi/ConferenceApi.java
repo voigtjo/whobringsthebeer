@@ -136,6 +136,7 @@ public class ConferenceApi {
      */
     @ApiMethod(name = "getProfile", path = "profile", httpMethod = HttpMethod.GET)
     public Profile getProfile(final User user) throws UnauthorizedException {
+    	
     	LOG.info("conference.getProfile:  + user= " + user);
         if (user == null) {
             throw new UnauthorizedException("Authorization required");

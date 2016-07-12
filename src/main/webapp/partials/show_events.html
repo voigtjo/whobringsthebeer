@@ -1,4 +1,4 @@
-<div ng-controller="ShowGroupCtrl">
+<div ng-controller="ShowEventCtrl">
     <div class="row">
         <div class="col-lg-12">
             <div id="messages" class="alert alert-{{alertStatus}}" ng-show="messages">
@@ -12,7 +12,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <h3>Show groups</h3>
+            <h3>Show events</h3>
         </div>
     </div>
 
@@ -25,7 +25,7 @@
     <div class="row row-offcanvas row-offcanvas-right" ng-class="{active: isOffcanvasEnabled}">
         <div class="col-xs-12 col-sm-8">
 
-            <button ng-click="queryGroups();" class="btn btn-primary">
+            <button ng-click="queryEvents();" class="btn btn-primary">
                 <i class="glyphicon glyphicon-search"></i> Search
             </button>
 
@@ -40,25 +40,25 @@
                 </button>
             </p>
 
-            <div ng-show="submitted && groups.length == 0">
+            <div ng-show="submitted && events.length == 0">
                 <h4>No matching results.</h4>
             </div>
-            <div class="table-responsive" ng-show="groups.length > 0">
-                <table id="group-table" class="table table-striped table-hover">
+            <div class="table-responsive" ng-show="events.length > 0">
+                <table id="event-table" class="table table-striped table-hover">
                     <thead>
                     <tr>
-                    	<th>Details</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Organizer</th>
+                    	<th>Event.websafeKey</th>
+                    	<th>Group</th>
+                        <th>Date</th>
+                        <th>Location</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="group in groups | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize">
-                        <td><a href="#/group/detail/{{group.websafeKey}}">{{group.websafeKey}}</a></td>
-                        <td>{{group.name}}</td>
-                        <td>{{group.description}}</td>
-                        <td>{{group.organizerDisplayName}}</td>
+                    <tr ng-repeat="event in events | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize">
+                        <td><a href="#/event/detail/{{event.websafeKey}}">{{event.websafeKey}}</a></td>
+                        <td>{{event.groupDisplayName}}</td>
+                        <td>{{event.eventDate}}</td>
+                        <td>{{event.location}}</td>
                     </tr>
                     </tbody>
                 </table>

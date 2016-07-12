@@ -5,6 +5,7 @@ import static de.joevoi.whobringsthebeer.service.OfyService.ofy;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -23,10 +24,11 @@ import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
 
 import de.joevoi.whobringsthebeer.Constants;
+import de.joevoi.whobringsthebeer.domain.Conference;
 import de.joevoi.whobringsthebeer.domain.Event;
 import de.joevoi.whobringsthebeer.domain.Group;
 import de.joevoi.whobringsthebeer.domain.Profile;
-import de.joevoi.whobringsthebeer.form.EventForm;
+import de.joevoi.whobringsthebeer.form.EventStructureForm;
 import de.joevoi.whobringsthebeer.form.ProfileForm.TeeShirtSize;
 
 /**
@@ -58,57 +60,86 @@ public class EventApi {
      * @param conferenceForm A ConferenceForm object representing user's inputs.
      * @return A newly created Conference Object.
      * @throws UnauthorizedException when the user is not signed in.
+     * @throws NotFoundException 
      */
-    @ApiMethod(name = "createEvent", path = "event", httpMethod = HttpMethod.POST)
-    public Event createEvent(final User user, @Named("websafeGroupKey") final String websafeGroupKey, final EventForm eventForm)
-        throws UnauthorizedException {
-    	LOG.warning("Create Event ...");
+    @ApiMethod(name = "saveEvent", path = "saveEvent", httpMethod = HttpMethod.POST)
+    public Event saveEvent(final User user, final EventStructureForm eventForm)
+        throws UnauthorizedException, NotFoundException {
+    	LOG.info("Create Event ...");
         if (user == null) {
             throw new UnauthorizedException("Authorization required");
         }
+        LOG.info("Create Event: user= " + user.getUserId());
+        
         // Allocate Id first, in order to make the transaction idempotent.
         final String userId = user.getUserId();
-        Key<Profile> profileKey = Key.create(Profile.class, userId);
+        
+        final String websafeGroupKey = eventForm.getWebsafeGroupKey();
+        final String location = eventForm.getLocation();
+        final Date eventDate = eventForm.getEventDate();
+        LOG.info("Create Event: websafeGroupKey= " + websafeGroupKey + ", location= " + location + ", eventDate= " + eventDate);
         
         Key<Group> groupKey = Key.create(websafeGroupKey);
+        final Group group = ofy().load().key(groupKey).now();
+		if (group == null) {
+			throw new NotFoundException("No Group found with key: " + websafeGroupKey);
+		}
         final Key<Event> eventKey = factory().allocateId(groupKey, Event.class);
         final long eventId = eventKey.getId();
 
         
         // Start a transaction.
-        Event event = ofy().transact(new Work<Event>() {
+        Event eventDb = ofy().transact(new Work<Event>() {
             @Override
             public Event run() {
             	System.out.println();
             	LOG.warning("Create Event: run ...");
                 // Fetch user's Profile.
-                Profile profile = getProfileFromUser(user);
-                Event event = new Event(eventId, eventForm, websafeGroupKey, userId);
+                Event event = new Event(eventId, location, eventDate, websafeGroupKey, userId);
+                String websafeEventKey = event.getWebsafeKey();
+                group.addEventToGroup(websafeEventKey);
                 // Save Event
-                ofy().save().entities(event).now();
+                ofy().save().entities(event, group).now();
                 return event;
             }
         });
-        return event;
+        return eventDb;
     }
-
 
     @ApiMethod(
-            name = "queryEvents_nofilters",
-            path = "queryEvents_nofilters",
+            name = "getAllEvents",
+            path = "getAllEvents",
             httpMethod = HttpMethod.POST
     )
-    public List<Event> queryEvents_nofilters() {
-        // Find all entities of type Conference
+    public List<Event> getAllEvents() {
+        // Find all entities of type Event
         Query<Event> query = ofy().load().type(Event.class).order("eventDate");
-
-        return query.list();
+        List<Event> events = query.list();
+        int size = events.size();
+        LOG.info("all events: size = " + size);
+        int i = 0;
+        for (Event event : events){
+        	LOG.info("Event[" + i + "/" + size+ "]= " + event.toString());
+        }
+        return events;
     }
+    
+    @ApiMethod(name = "getEventsCreated", path = "getEventsCreated", httpMethod = HttpMethod.POST)
+	public List<Group> getEventsCreated(final User user) throws UnauthorizedException {
+		// If not signed in, throw a 401 error.
+		if (user == null) {
+			throw new UnauthorizedException("Authorization required");
+		}
+		String userId = user.getUserId();
+		Key<Profile> userKey = Key.create(Profile.class, userId);
+		return ofy().load().type(Group.class)
+				.order("eventDate").ancestor(userKey).list();
+	}
 
 
     @ApiMethod(
             name = "getEventsOfGroup",
-            path = "getEventsCreated",
+            path = "getEventsOfGroup",
             httpMethod = HttpMethod.POST
     )
     public List<Event> getEventsOfGroup(final User user, @Named("websafeGroupKey") final String websafeGroupKey) throws UnauthorizedException {
@@ -117,8 +148,14 @@ public class EventApi {
             throw new UnauthorizedException("Authorization required");
         }
         Key<Group> groupKey = Key.create(websafeGroupKey);
-        return ofy().load().type(Event.class)
-                .ancestor(groupKey).list();
+        List<Event> events = ofy().load().type(Event.class).ancestor(groupKey).order("eventDate").list();
+        int size = events.size();
+        LOG.info("events of group: size = " + size);
+        int i = 0;
+        for (Event event : events){
+        	LOG.info("Event[" + i + "/" + size+ "]= " + event.toString());
+        }
+        return events;
     }
 
     /**
@@ -362,6 +399,27 @@ public class EventApi {
         Profile profile = (Profile) ofy().load().key(key).now();
         LOG.info("event.getProfile:  profile= " + profile);
         return profile;
+    }
+    
+    @ApiMethod(name = "getGroupsMemberOf", path = "getGroupsMemberOf", httpMethod = HttpMethod.GET)
+    public Collection<Group> getGroupsMemberOf(final User user) throws UnauthorizedException, NotFoundException {
+        // If not signed in, throw a 401 error.
+        if (user == null) {
+            throw new UnauthorizedException("Authorization required");
+        }
+        Profile profile = ofy().load().key(Key.create(Profile.class, user.getUserId())).now();
+        if (profile == null) {
+            throw new NotFoundException("Profile doesn't exist.");
+        }
+        List<String> groupKeyStringsMemberOf = profile.getGroupKeysMemberOf();
+        LOG.info("getGroupsMemberOf: groupKeyStringsMemberOf.size()=" + groupKeyStringsMemberOf.size());
+        List<Key<Group>> groupKeysMemberOf = new ArrayList<>();
+        for (String groupKeyString : groupKeyStringsMemberOf) {
+        	LOG.info("getGroupsMemberOf: groupKeyString=" + groupKeyString);
+        	groupKeysMemberOf.add(Key.<Group>create(groupKeyString));
+        }
+        Collection<Group> groups = ofy().load().keys(groupKeysMemberOf).values();
+        return groups;
     }
 
 }

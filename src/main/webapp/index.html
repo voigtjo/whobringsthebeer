@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Event Mgmt v0.2.6</title>
+    <title>Event Mgmt 0.2.20</title>
 
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-cosmo.css">
@@ -50,14 +50,16 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Event Mgmt v0.2.6</a>
+            <a class="navbar-brand" href="/">Event Mgmt 0.2.20</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li ng-class="{ active: isActive('/conference')}" ng-click="collapseNavbar()"><a href="#/conference">Show Conferences</a></li>
-                <li ng-class="{ active: isActive('/conference/create')}" ng-click="collapseNavbar()"><a href="#/conference/create" >Create Conferences</a></li>
+                <li ng-class="{ active: isActive('/conference')}" ng-click="collapseNavbar()"><a href="#/conference">Show Confs</a></li>
+                <li ng-class="{ active: isActive('/conference/create')}" ng-click="collapseNavbar()"><a href="#/conference/create" >Create Conf</a></li>
                 <li ng-class="{ active: isActive('/group')}" ng-click="collapseNavbar()"><a href="#/group">Show Groups</a></li>
                 <li ng-class="{ active: isActive('/group/create')}" ng-click="collapseNavbar()"><a href="#/group/create" >Create Group</a></li>
+                <li ng-class="{ active: isActive('/event')}" ng-click="collapseNavbar()"><a href="#/event">Show Events</a></li>
+                <li ng-class="{ active: isActive('/event/create')}" ng-click="collapseNavbar()"><a href="#/event/create" >Create Event</a></li>
                 <li ng-class="{ active: isActive('/profile')}" ng-click="collapseNavbar()"><a href="#/profile">My Profile</a></li>
                 <li class="nav-divider"></li>
             </ul>
@@ -87,6 +89,7 @@
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="/js/app.js"></script>
 <script src="/js/controllers.js"></script>
+<script src="/js/eventControllers.js"></script>
 
 <!-- Put the signInButton to invoke the gapi.signin.render to restore the credential if stored in cookie. -->
 <span id="signInButton" style="display: none" disabled="true"></span>

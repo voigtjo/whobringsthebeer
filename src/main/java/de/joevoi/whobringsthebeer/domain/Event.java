@@ -16,8 +16,6 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 
-import de.joevoi.whobringsthebeer.form.EventForm;
-
 /**
  * Event class stores event information.
  */
@@ -32,8 +30,7 @@ public class Event {
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private Key<Group> groupKey;
     
-    @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
-    private String groupId;
+    private String websafeGroupKey;
     
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private Key<Profile> profileKey;
@@ -46,7 +43,7 @@ public class Event {
 
     @Index private String location;
 
-    private Date eventDate;
+    @Index private Date eventDate;
 
    
 
@@ -55,12 +52,12 @@ public class Event {
      */
     private Event() {}
 
-    public Event(long id, EventForm eventForm, String groupId, String organizerUserId) {
+    public Event(long id, String location, Date eventDate, String websafeGroupKey, String organizerUserId) {
         this.id = id;
-        this.location = eventForm.getLocation();
-        this.eventDate = eventForm.getEventDate();
-        this.groupKey = Key.create(Group.class, groupId);
-        this.groupId = groupId;
+        this.location = location;
+        this.eventDate = eventDate == null ? null : new Date(eventDate.getTime());
+        this.websafeGroupKey = websafeGroupKey;
+        this.groupKey = Key.create(websafeGroupKey);
         this.profileKey = Key.create(Profile.class, organizerUserId);
         this.organizerUserId = organizerUserId;
     }
@@ -85,11 +82,6 @@ public class Event {
         return organizerUserId;
     }
 
-    /**
-     * Returns organizer's display name.
-     *
-     * @return organizer's display name. If there is no Profile, return his/her userId.
-     */
     public String getOrganizerDisplayName() {
         // Profile organizer = ofy().load().key(Key.create(Profile.class, organizerUserId)).now();
         Profile organizer = ofy().load().key(getProfileKey()).now();
@@ -100,10 +92,20 @@ public class Event {
         }
     }
 
-	public String getGroupId() {
-		return groupId;
+    public String getWebsafeGroupKey() {
+		return websafeGroupKey;
 	}
+    
+    public String getGroupDisplayName() {
+        Group group = ofy().load().key(getGroupKey()).now();
+        if (group == null) {
+            return getWebsafeGroupKey();
+        } else {
+            return group.getName();
+        }
+    }
 
+	@ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
 	public Key<Profile> getProfileKey() {
 		return profileKey;
 	}
@@ -132,5 +134,26 @@ public class Event {
         }
     }
 
+	@Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder("Id: " + id + "\n")
+        		.append("WebsafeKey: ").append(getWebsafeKey()).append("\n")
+        		.append("websafeGroupKey: ").append(websafeGroupKey).append("\n")
+                .append("groupKey: ").append(groupKey).append("\n")
+                .append("profileKey: ").append(profileKey).append("\n");
+        if (location != null) {
+            stringBuilder.append("location: ").append(location).append("\n");
+        }
+        if (eventDate != null) {
+            stringBuilder.append("EndDate: ").append(eventDate.toString()).append("\n");
+        }
+        if (memberKeys != null && memberKeys.size() > 0) {
+            stringBuilder.append("Member Key:\n");
+            for (String memberKey : memberKeys) {
+                stringBuilder.append("\t").append(memberKey).append("\n");
+            }
+        }
+        return stringBuilder.toString();
+    }
 
 }

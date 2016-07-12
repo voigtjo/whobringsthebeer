@@ -19,6 +19,7 @@
                     <label for="organizer">Organizer: </label>
                     <span id="organizer">{{group.organizerDisplayName}}</span>
                 </div>
+                
                 <p><a class="btn btn-primary" ng-hide="isUserAttending" ng-click="addMemberToGroup()"
                         ng-disabled="loading">Register</a></p>
                 <p><a class="btn btn-primary" ng-show="isUserAttending" ng-click="removeMemberFromGroup()"
@@ -37,6 +38,6 @@
                     </div>
                 </fieldset>
             </form>
-        </div>
+            
     </div>
 </div>
