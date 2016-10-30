@@ -35,13 +35,13 @@ profileAppControllers.controller('MyProfileCtrl',
 	            var retrieveProfileCallback = function () {
 	                $scope.profile = {};
 	                $scope.loading = true;
-	                gapi.client.conference.getProfile().
+	                gapi.client.profile.getProfile().
 	                    execute(function (resp) {
 	                        $scope.$apply(function () {
 	                            $scope.loading = false;
 	                            if (resp.error) {
 	                                // Failed to get a user profile.
-	                            	console.log("Failed to get a user profile: " + JSON.stringify(resp.error));
+	                            	console.log("Profile: Failed to get a user profile: " + JSON.stringify(resp.error));
 	                            } else {
 	                                // Succeeded to get the user profile.
 	                                $scope.profile.displayName = resp.result.displayName;
@@ -67,7 +67,7 @@ profileAppControllers.controller('MyProfileCtrl',
 	        $scope.saveProfile = function () {
 	            $scope.submitted = true;
 	            $scope.loading = true;
-	            gapi.client.conference.saveProfile($scope.profile).
+	            gapi.client.profile.saveProfile($scope.profile).
 	                execute(function (resp) {
 	                    $scope.$apply(function () {
 	                        $scope.loading = false;

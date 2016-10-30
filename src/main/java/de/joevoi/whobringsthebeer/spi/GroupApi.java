@@ -34,8 +34,8 @@ import de.joevoi.whobringsthebeer.form.ProfileForm.TeeShirtSize;
 clientIds = {
 		Constants.WEB_CLIENT_ID,
 		Constants.API_EXPLORER_CLIENT_ID },
-description = "group API for the WhoBringsTheBeer Backend application.")
-public class GroupApi {
+		description = "group API for the WhoBringsTheBeer Backend application.")
+public class GroupApi extends BasicApi{
 	private static final Logger LOG = Logger.getLogger(GroupApi.class.getName());
 
 
@@ -51,7 +51,7 @@ public class GroupApi {
 		final String name = group.getName();
 		final String description = group.getDescription();
 		LOG.info("Create Event: user= " + userId);
-		
+
 		Key<Profile> profileKey = Key.create(Profile.class, userId);
 		final Key<Group> groupKey = factory().allocateId(profileKey, Group.class);
 		final long groupId = groupKey.getId();
@@ -213,86 +213,50 @@ public class GroupApi {
 		// NotFoundException is actually thrown here.
 		return new WrappedBoolean(result.getResult());
 	}
-	
+
 	@ApiMethod(name = "getGroupsMemberOf", path = "getGroupsMemberOf", httpMethod = HttpMethod.GET)
-    public Collection<Group> getGroupsMemberOf(final User user) throws UnauthorizedException, NotFoundException {
-        // If not signed in, throw a 401 error.
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-        Profile profile = ofy().load().key(Key.create(Profile.class, user.getUserId())).now();
-        if (profile == null) {
-            throw new NotFoundException("Profile doesn't exist.");
-        }
-        List<String> groupKeyStringsMemberOf = profile.getGroupKeysMemberOf();
-        LOG.info("getGroupsMemberOf: groupKeyStringsMemberOf.size()=" + groupKeyStringsMemberOf.size());
-        List<Key<Group>> groupKeysMemberOf = new ArrayList<>();
-        for (String groupKeyString : groupKeyStringsMemberOf) {
-        	LOG.info("getGroupsMemberOf: groupKeyString=" + groupKeyString);
-        	groupKeysMemberOf.add(Key.<Group>create(groupKeyString));
-        }
-        Collection<Group> groups = ofy().load().keys(groupKeysMemberOf).values();
-        return groups;
-    }
-	
-//	 @ApiMethod(name = "getProfile", path = "profile", httpMethod = HttpMethod.GET)
-//	    public Profile getProfile(final User user) throws UnauthorizedException {
-//	        if (user == null) {
-//	            throw new UnauthorizedException("Authorization required");
-//	        }
-//
-//	        // load the Profile Entity
-//	        String userId = user.getUserId();
-//	        Key key = Key.create(Profile.class, userId);
-//
-//	        Profile profile = (Profile) ofy().load().key(key).now();
-//	        return profile;
-//	    }
-
-static class WrappedBoolean {
-
-	private final Boolean result;
-	private final String reason;
-
-	public WrappedBoolean(Boolean result) {
-		this.result = result;
-		this.reason = "";
+	public Collection<Group> getGroupsMemberOf(final User user) throws UnauthorizedException, NotFoundException {
+		// If not signed in, throw a 401 error.
+		if (user == null) {
+			throw new UnauthorizedException("Authorization required");
+		}
+		Profile profile = ofy().load().key(Key.create(Profile.class, user.getUserId())).now();
+		if (profile == null) {
+			throw new NotFoundException("Profile doesn't exist.");
+		}
+		List<String> groupKeyStringsMemberOf = profile.getGroupKeysMemberOf();
+		LOG.info("getGroupsMemberOf: groupKeyStringsMemberOf.size()=" + groupKeyStringsMemberOf.size());
+		List<Key<Group>> groupKeysMemberOf = new ArrayList<>();
+		for (String groupKeyString : groupKeyStringsMemberOf) {
+			LOG.info("getGroupsMemberOf: groupKeyString=" + groupKeyString);
+			groupKeysMemberOf.add(Key.<Group>create(groupKeyString));
+		}
+		Collection<Group> groups = ofy().load().keys(groupKeysMemberOf).values();
+		return groups;
 	}
 
-	public WrappedBoolean(Boolean result, String reason) {
-		this.result = result;
-		this.reason = reason;
+	static class WrappedBoolean {
+
+		private final Boolean result;
+		private final String reason;
+
+		public WrappedBoolean(Boolean result) {
+			this.result = result;
+			this.reason = "";
+		}
+
+		public WrappedBoolean(Boolean result, String reason) {
+			this.result = result;
+			this.reason = reason;
+		}
+
+		public Boolean getResult() {
+			return result;
+		}
+
+		public String getReason() {
+			return reason;
+		}
 	}
 
-	public Boolean getResult() {
-		return result;
-	}
-
-	public String getReason() {
-		return reason;
-	}
-}
-	private static String extractDefaultDisplayNameFromEmail(String email) {
-		return email == null ? null : email.substring(0, email.indexOf("@"));
-	}
-	
-	/**
-     * Gets the Profile entity for the current user
-     * or creates it if it doesn't exist
-     * @param user
-     * @return user's Profile
-     */
-    public static Profile getProfileFromUser(User user) {
-        // First fetch the user's Profile from the datastore.
-        Profile profile = ofy().load().key(
-                Key.create(Profile.class, user.getUserId())).now();
-        if (profile == null) {
-            // Create a new Profile if it doesn't exist.
-            // Use default displayName and teeShirtSize
-            String email = user.getEmail();
-            profile = new Profile(user.getUserId(),
-                    extractDefaultDisplayNameFromEmail(email), email, TeeShirtSize.NOT_SPECIFIED);
-        }
-        return profile;
-    }
 }

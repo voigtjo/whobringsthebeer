@@ -313,11 +313,12 @@ groupAppControllers.controller('GroupDetailCtrl', function ($scope, $log, $route
 
 		$scope.loading = true;
 		// If the user is attending the group, updates the status message and available function.
-		gapi.client.conference.getProfile().execute(function (resp) {
+		gapi.client.profile.getProfile().execute(function (resp) {
 			$scope.$apply(function () {
 				$scope.loading = false;
 				if (resp.error) {
 					// Failed to get a user profile.
+					alert("Group: Failed to get a user profile: " + JSON.stringify(resp.error));
 				} else {
 					var profile = resp.result;
 					for (var i = 0; i < profile.groupKeysMemberOf.length; i++) {

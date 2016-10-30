@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/_MsritS4zOaeq0tT5fmlVMqscVQ\"",
+ "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/Hbb8NkjoRNANl0gORDSyjmw-BA0\"",
  "discoveryVersion": "v1",
  "id": "event:v1",
  "name": "event",
@@ -84,6 +84,12 @@
      "type": "string",
      "format": "int64"
     },
+    "invitationKeys": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
     "location": {
      "type": "string"
     },
@@ -92,6 +98,9 @@
      "items": {
       "type": "string"
      }
+    },
+    "name": {
+     "type": "string"
     },
     "organizerDisplayName": {
      "type": "string"
@@ -178,66 +187,6 @@
     }
    }
   },
-  "Profile": {
-   "id": "Profile",
-   "type": "object",
-   "properties": {
-    "conferenceKeysToAttend": {
-     "type": "array",
-     "items": {
-      "type": "string"
-     }
-    },
-    "displayName": {
-     "type": "string"
-    },
-    "eventKeysToAttend": {
-     "type": "array",
-     "items": {
-      "type": "string"
-     }
-    },
-    "groupKeysMemberOf": {
-     "type": "array",
-     "items": {
-      "type": "string"
-     }
-    },
-    "mainEmail": {
-     "type": "string"
-    },
-    "teeShirtSize": {
-     "$ref": "TeeShirtSize"
-    },
-    "userId": {
-     "type": "string"
-    }
-   }
-  },
-  "TeeShirtSize": {
-   "id": "TeeShirtSize",
-   "type": "string",
-   "enum": [
-    "L",
-    "M",
-    "NOT_SPECIFIED",
-    "S",
-    "XL",
-    "XS",
-    "XXL",
-    "XXXL"
-   ],
-   "enumDescriptions": [
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    ""
-   ]
-  },
   "WrappedBoolean": {
    "id": "WrappedBoolean",
    "type": "object",
@@ -283,7 +232,7 @@
   "event.getEventsCreated": {
    "id": "event.getEventsCreated",
    "returns": {
-    "$ref": "GroupCollection"
+    "$ref": "EventCollection"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -322,16 +271,6 @@
    "allowGet": true,
    "returns": {
     "$ref": "GroupCollection"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
-  "event.getProfile": {
-   "id": "event.getProfile",
-   "allowGet": true,
-   "returns": {
-    "$ref": "Profile"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

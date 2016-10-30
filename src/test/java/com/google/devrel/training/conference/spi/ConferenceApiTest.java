@@ -15,6 +15,7 @@ import de.joevoi.whobringsthebeer.domain.Profile;
 import de.joevoi.whobringsthebeer.form.ProfileForm;
 import de.joevoi.whobringsthebeer.form.ProfileForm.TeeShirtSize;
 import de.joevoi.whobringsthebeer.spi.ConferenceApi;
+import de.joevoi.whobringsthebeer.spi.ProfileApi;
 
 import org.junit.After;
 import org.junit.Before;
@@ -52,6 +53,7 @@ public class ConferenceApiTest {
     private User user;
 
     private ConferenceApi conferenceApi;
+    private ProfileApi profileApi;
 
     private final LocalServiceTestHelper helper =
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig()
@@ -62,6 +64,7 @@ public class ConferenceApiTest {
         helper.setUp();
         user = new User(EMAIL, "gmail.com", USER_ID);
         conferenceApi = new ConferenceApi();
+        profileApi = new ProfileApi();
     }
 
     @After
@@ -72,21 +75,21 @@ public class ConferenceApiTest {
 
     @Test(expected = UnauthorizedException.class)
     public void testGetProfileWithoutUser() throws Exception {
-        conferenceApi.getProfile(null);
+    	profileApi.getProfile(null);
     }
 
     @Test
     public void testGetProfileFirstTime() throws Exception {
         Profile profile = ofy().load().key(Key.create(Profile.class, user.getUserId())).now();
         assertNull(profile);
-        profile = conferenceApi.getProfile(user);
+        profile = profileApi.getProfile(user);
         assertNull(profile);
     }
 
     @Test
     public void testSaveProfile() throws Exception {
         // Save the profile for the first time.
-        Profile profile = conferenceApi.saveProfile(
+        Profile profile = profileApi.saveProfile(
                 user, new ProfileForm(DISPLAY_NAME, TEE_SHIRT_SIZE));
         // Check the return value first.
         assertEquals(USER_ID, profile.getUserId());
@@ -104,7 +107,7 @@ public class ConferenceApiTest {
     @Test
     public void testSaveProfileWithNull() throws Exception {
         // Save the profile for the first time with null values.
-        Profile profile = conferenceApi.saveProfile(user, new ProfileForm(null, null));
+        Profile profile = profileApi.saveProfile(user, new ProfileForm(null, null));
         String displayName = EMAIL.substring(0, EMAIL.indexOf("@"));
         // Check the return value first.
         assertEquals(USER_ID, profile.getUserId());
@@ -121,9 +124,9 @@ public class ConferenceApiTest {
 
     @Test
     public void testGetProfile() throws Exception {
-        conferenceApi.saveProfile(user, new ProfileForm(DISPLAY_NAME, TEE_SHIRT_SIZE));
+    	profileApi.saveProfile(user, new ProfileForm(DISPLAY_NAME, TEE_SHIRT_SIZE));
         // Fetch the Profile via the API.
-        Profile profile = conferenceApi.getProfile(user);
+        Profile profile = profileApi.getProfile(user);
         assertEquals(USER_ID, profile.getUserId());
         assertEquals(EMAIL, profile.getMainEmail());
         assertEquals(TEE_SHIRT_SIZE, profile.getTeeShirtSize());
@@ -133,7 +136,7 @@ public class ConferenceApiTest {
     @Test
     public void testUpdateProfile() throws Exception {
         // Save for the first time.
-        conferenceApi.saveProfile(user, new ProfileForm(DISPLAY_NAME, TEE_SHIRT_SIZE));
+    	profileApi.saveProfile(user, new ProfileForm(DISPLAY_NAME, TEE_SHIRT_SIZE));
         Profile profile = ofy().load().key(Key.create(Profile.class, user.getUserId())).now();
         assertEquals(USER_ID, profile.getUserId());
         assertEquals(EMAIL, profile.getMainEmail());
@@ -142,7 +145,7 @@ public class ConferenceApiTest {
         // Then try to update it.
         String newDisplayName = "New Name";
         TeeShirtSize newTeeShirtSize = TeeShirtSize.L;
-        conferenceApi.saveProfile(user, new ProfileForm(newDisplayName, newTeeShirtSize));
+        profileApi.saveProfile(user, new ProfileForm(newDisplayName, newTeeShirtSize));
         profile = ofy().load().key(Key.create(Profile.class, user.getUserId())).now();
         assertEquals(USER_ID, profile.getUserId());
         assertEquals(EMAIL, profile.getMainEmail());
@@ -152,9 +155,9 @@ public class ConferenceApiTest {
 
     @Test
     public void testUpdateProfileWithNulls() throws Exception {
-        conferenceApi.saveProfile(user, new ProfileForm(DISPLAY_NAME, TEE_SHIRT_SIZE));
+    	profileApi.saveProfile(user, new ProfileForm(DISPLAY_NAME, TEE_SHIRT_SIZE));
         // Update the Profile with null values.
-        Profile profile = conferenceApi.saveProfile(user, new ProfileForm(null, null));
+        Profile profile = profileApi.saveProfile(user, new ProfileForm(null, null));
         // Expected behavior is that the existing properties do not get overwritten
 
         // Check the return value first.

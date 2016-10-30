@@ -7,6 +7,7 @@ import com.googlecode.objectify.ObjectifyService;
 import de.joevoi.whobringsthebeer.domain.Conference;
 import de.joevoi.whobringsthebeer.domain.Event;
 import de.joevoi.whobringsthebeer.domain.Group;
+import de.joevoi.whobringsthebeer.domain.Invitation;
 import de.joevoi.whobringsthebeer.domain.Profile;
 
 /**
@@ -21,6 +22,7 @@ public class OfyService {
         factory().register(Profile.class);
         factory().register(Group.class);
         factory().register(Event.class);
+        factory().register(Invitation.class);
     }
 
     /**

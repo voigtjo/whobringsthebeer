@@ -30,6 +30,7 @@ public class Profile {
      * Keys of the conferences that this user registers to attend.
      */
     private List<String> eventKeysToAttend = new ArrayList<>(0);
+    private List<String> invitationKeysToAttend = new ArrayList<>(0);
     private List<String> conferenceKeysToAttend = new ArrayList<>(0);
     private List<String> groupKeysMemberOf = new ArrayList<>(0);
 
@@ -153,6 +154,22 @@ public class Profile {
 	public String toString() {
 		return "Profile [displayName=" + displayName + ", mainEmail=" + mainEmail + ", teeShirtSize=" + teeShirtSize
 				+ ", userId=" + userId + "]";
+	}
+
+	public List<String> getInvitationKeysToAttend() {
+		return ImmutableList.copyOf(invitationKeysToAttend);
+	}
+
+	public void addToInvitationKeysToAttend(String invitationKey) {
+		eventKeysToAttend.add(invitationKey);
+	}
+
+	public void unregisterFromInvitation(String invitationKey) {
+		if (invitationKeysToAttend.contains(invitationKey)) {
+			invitationKeysToAttend.remove(invitationKey);
+        } else {
+            throw new IllegalArgumentException("Invalid invitationKey: " + invitationKey);
+        }
 	}
     
     

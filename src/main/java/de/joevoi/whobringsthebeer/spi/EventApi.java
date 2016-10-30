@@ -24,12 +24,10 @@ import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
 
 import de.joevoi.whobringsthebeer.Constants;
-import de.joevoi.whobringsthebeer.domain.Conference;
 import de.joevoi.whobringsthebeer.domain.Event;
 import de.joevoi.whobringsthebeer.domain.Group;
 import de.joevoi.whobringsthebeer.domain.Profile;
 import de.joevoi.whobringsthebeer.form.EventStructureForm;
-import de.joevoi.whobringsthebeer.form.ProfileForm.TeeShirtSize;
 
 /**
  * Defines conference APIs.
@@ -39,7 +37,7 @@ import de.joevoi.whobringsthebeer.form.ProfileForm.TeeShirtSize;
         Constants.WEB_CLIENT_ID,
         Constants.API_EXPLORER_CLIENT_ID },
         description = "API for the WhoBringsTheBeer Backend application.")
-public class EventApi {
+public class EventApi extends BasicApi{
 	
 	private static final Logger LOG = Logger.getLogger(
 			EventApi.class.getName());
@@ -125,14 +123,14 @@ public class EventApi {
     }
     
     @ApiMethod(name = "getEventsCreated", path = "getEventsCreated", httpMethod = HttpMethod.POST)
-	public List<Group> getEventsCreated(final User user) throws UnauthorizedException {
+	public List<Event> getEventsCreated(final User user) throws UnauthorizedException {
 		// If not signed in, throw a 401 error.
 		if (user == null) {
 			throw new UnauthorizedException("Authorization required");
 		}
 		String userId = user.getUserId();
 		Key<Profile> userKey = Key.create(Profile.class, userId);
-		return ofy().load().type(Group.class)
+		return ofy().load().type(Event.class)
 				.order("eventDate").ancestor(userKey).list();
 	}
 
@@ -360,46 +358,8 @@ public class EventApi {
         return ofy().load().keys(keysToAttend).values();
     }
 
-    private static String extractDefaultDisplayNameFromEmail(String email) {
-		return email == null ? null : email.substring(0, email.indexOf("@"));
-	}
-    
-	/**
-     * Gets the Profile entity for the current user
-     * or creates it if it doesn't exist
-     * @param user
-     * @return user's Profile
-     */
-    public static Profile getProfileFromUser(User user) {
-        // First fetch the user's Profile from the datastore.
-        Profile profile = ofy().load().key(
-                Key.create(Profile.class, user.getUserId())).now();
-        if (profile == null) {
-            // Create a new Profile if it doesn't exist.
-            // Use default displayName and teeShirtSize
-            String email = user.getEmail();
-            profile = new Profile(user.getUserId(),
-                    extractDefaultDisplayNameFromEmail(email), email, TeeShirtSize.NOT_SPECIFIED);
-        }
-        return profile;
-    }
-    
-    @ApiMethod(name = "getProfile", path = "profile", httpMethod = HttpMethod.GET)
-    public Profile getProfile(final User user) throws UnauthorizedException {
-    	LOG.info("event.getProfile:  + user= " + user);
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-        LOG.info("event.getProfile:  Authorization success");
-        // TODO
-        // load the Profile Entity
-        String userId = user.getUserId();
-        Key key = Key.create(Profile.class, userId);
-
-        Profile profile = (Profile) ofy().load().key(key).now();
-        LOG.info("event.getProfile:  profile= " + profile);
-        return profile;
-    }
+ 
+  
     
     @ApiMethod(name = "getGroupsMemberOf", path = "getGroupsMemberOf", httpMethod = HttpMethod.GET)
     public Collection<Group> getGroupsMemberOf(final User user) throws UnauthorizedException, NotFoundException {

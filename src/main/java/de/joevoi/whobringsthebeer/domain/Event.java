@@ -25,6 +25,9 @@ public class Event {
 
     @Id
     private long id;
+    
+    @Index
+    private String name;
 
     @Parent
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
@@ -40,6 +43,17 @@ public class Event {
 
     @Index
     private List<String> memberKeys = new ArrayList<>(0);
+    
+    @Index
+    private List<String> invitationKeys = new ArrayList<>(0);
+    
+	public List<String> getInvitationKeys() {
+		return invitationKeys == null ? null : ImmutableList.copyOf(invitationKeys);
+	}
+	
+	public void addInvitationToEvent(String invitationKey) {
+		invitationKeys.add(invitationKey);
+    }
 
     @Index private String location;
 
@@ -66,6 +80,9 @@ public class Event {
         return id;
     }
 
+	public String getName() {
+		return name;
+	}
 
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     public Key<Group> getGroupKey() {

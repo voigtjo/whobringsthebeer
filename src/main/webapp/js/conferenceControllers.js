@@ -458,11 +458,12 @@ conferenceAppControllers.controller('ConferenceDetailCtrl', function ($scope, $l
 
         $scope.loading = true;
         // If the user is attending the conference, updates the status message and available function.
-        gapi.client.conference.getProfile().execute(function (resp) {
+        gapi.client.profile.getProfile().execute(function (resp) {
             $scope.$apply(function () {
                 $scope.loading = false;
                 if (resp.error) {
                     // Failed to get a user profile.
+                	alert("Conf: Failed to get a user profile: " + JSON.stringify(resp.error));
                 } else {
                     var profile = resp.result;
                     for (var i = 0; i < profile.conferenceKeysToAttend.length; i++) {

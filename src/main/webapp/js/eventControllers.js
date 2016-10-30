@@ -2,7 +2,7 @@
 
 var eventAppControllers = angular.module('eventControllers',['ui.bootstrap']);
 
-eventAppControllers.controller('ShowEventCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
+eventAppControllers.controller('ShowEventCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS, EventService, ProfileService) {
 
 	/**
 	 * Holds the status if the query is being executed.
@@ -176,71 +176,42 @@ eventAppControllers.controller('ShowEventCtrl', function ($scope, $log, oauth2Pr
 		}
 	};
 
+	var getEventsCallback = function(resp, text){
+		$scope.$apply(function () {
+			$scope.loading = false;
+			if (resp.error) {
+				// The request has failed.
+				var errorMessage = resp.error.message || '';
+				$scope.messages = 'Failed to query events ' + text + ' : ' + errorMessage;
+				$scope.alertStatus = 'warning';
+			} else {
+				// The request has succeeded.
+				$scope.submitted = false;
+				$scope.alertStatus = 'success';
+				$log.info($scope.messages);
+
+				$scope.events = [];
+				angular.forEach(resp.items, function (event) {
+					$scope.events.push(event);
+				});
+			}
+			$scope.submitted = true;
+		});
+	}
 	/**
 	 * Invokes the group.queryGroups API.
 	 */
 	$scope.queryEventsAll = function () {
 		$scope.loading = true;
-		gapi.client.event.getAllEvents().
-		execute(function (resp) {
-			$scope.$apply(function () {
-				$scope.loading = false;
-				if (resp.error) {
-					// The request has failed.
-					var errorMessage = resp.error.message || '';
-					$scope.messages = 'Failed to query events : ' + errorMessage;
-					$scope.alertStatus = 'warning';
-				} else {
-					// The request has succeeded.
-					$scope.submitted = false;
-					$scope.alertStatus = 'success';
-					$log.info($scope.messages);
-
-					$scope.events = [];
-					angular.forEach(resp.items, function (event) {
-						$scope.events.push(event);
-					});
-				}
-				$scope.submitted = true;
-			});
-		});
-	}
+		EventService.queryEventsAll(getEventsCallback, '');
+	};
 
 	/**
 	 * Invokes the event.getEventsCreated method.
 	 */
 	$scope.getEventsCreated = function () {
 		$scope.loading = true;
-		gapi.client.event.getEventsCreated().
-		execute(function (resp) {
-			$scope.$apply(function () {
-				$scope.loading = false;
-				if (resp.error) {
-					// The request has failed.
-					var errorMessage = resp.error.message || '';
-					$scope.messages = 'Failed to query the events created : ' + errorMessage;
-					$scope.alertStatus = 'warning';
-					$log.error($scope.messages);
-
-					if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-						oauth2Provider.showLoginModal();
-						return;
-					}
-				} else {
-					// The request has succeeded.
-					$scope.submitted = false;
-					$scope.messages = 'Query succeeded : Events you have created';
-					$scope.alertStatus = 'success';
-					$log.info($scope.messages);
-
-					$scope.events = [];
-					angular.forEach(resp.items, function (event) {
-						$scope.events.push(group);
-					});
-				}
-				$scope.submitted = true;
-			});
-		});
+		EventService.getEventsCreated(getEventsCallback, 'created');
 	};
 
 	/**
@@ -249,31 +220,7 @@ eventAppControllers.controller('ShowEventCtrl', function ($scope, $log, oauth2Pr
 	 */
 	$scope.getEventsToAttend = function () {
 		$scope.loading = true;
-		gapi.client.event.getEventsToAttend().
-		execute(function (resp) {
-			$scope.$apply(function () {
-				if (resp.error) {
-					// The request has failed.
-					var errorMessage = resp.error.message || '';
-					$scope.messages = 'Failed to query the events to attend : ' + errorMessage;
-					$scope.alertStatus = 'warning';
-					$log.error($scope.messages);
-
-					if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-						oauth2Provider.showLoginModal();
-						return;
-					}
-				} else {
-					// The request has succeeded.
-					$scope.events = resp.result.items;
-					$scope.loading = false;
-					$scope.messages = 'Query succeeded : Events you will attend (or you have attended)';
-					$scope.alertStatus = 'success';
-					$log.info($scope.messages);
-				}
-				$scope.submitted = true;
-			});
-		});
+		EventService.getEventsCreated(getEventsCallback, 'to attend');
 	};
 });
 
@@ -288,48 +235,50 @@ eventAppControllers.controller('EventDetailCtrl', function ($scope, $log, $route
 	 * Invokes the event.getEvent method and sets the returned event in the $scope.
 	 *
 	 */
+	var getEventCallback = function(resp){
+		$scope.$apply(function () {
+			$scope.loading = false;
+			if (resp.error) {
+				// The request has failed.
+				var errorMessage = resp.error.message || '';
+				$scope.messages = 'Failed to get the event : ' + $routeParams.websafeEventKey
+				+ ' ' + errorMessage;
+				$scope.alertStatus = 'warning';
+				$log.error($scope.messages);
+			} else {
+				// The request has succeeded.
+				$scope.alertStatus = 'success';
+				$scope.event = resp.result;
+			}
+		});
+	};
+	var getProfileCallback = function(resp){
+		$scope.$apply(function () {
+			$scope.loading = false;
+			if (resp.error) {
+				// Failed to get a user profile.
+				alert("Event: Failed to get a user profile: " + JSON.stringify(resp.error));
+			} else {
+				var profile = resp.result;
+				for (var i = 0; i < profile.eventKeysToAttend.length; i++) {
+					if ($routeParams.websafeEventKey == profile.eventKeysToAttend[i]) {
+						// The user is attending the conference.
+						$scope.alertStatus = 'info';
+						$scope.messages = 'You are member of this event';
+						$scope.isUserAttending = true;
+					}
+				}
+			}
+		});
+	};
+	
 	$scope.init = function () {
 		$scope.loading = true;
-		gapi.client.event.getEvent({
-			websafeEventKey: $routeParams.websafeEventKey
-		}).execute(function (resp) {
-			$scope.$apply(function () {
-				$scope.loading = false;
-				if (resp.error) {
-					// The request has failed.
-					var errorMessage = resp.error.message || '';
-					$scope.messages = 'Failed to get the event : ' + $routeParams.websafeEventKey
-					+ ' ' + errorMessage;
-					$scope.alertStatus = 'warning';
-					$log.error($scope.messages);
-				} else {
-					// The request has succeeded.
-					$scope.alertStatus = 'success';
-					$scope.event = resp.result;
-				}
-			});
-		});
+		EventService.getEvent(initCallback, {websafeEventKey: $routeParams.websafeEventKey});
 
 		$scope.loading = true;
 		// If the user is attending the group, updates the status message and available function.
-		gapi.client.conference.getProfile().execute(function (resp) {
-			$scope.$apply(function () {
-				$scope.loading = false;
-				if (resp.error) {
-					// Failed to get a user profile.
-				} else {
-					var profile = resp.result;
-					for (var i = 0; i < profile.eventKeysToAttend.length; i++) {
-						if ($routeParams.websafeEventKey == profile.eventKeysToAttend[i]) {
-							// The user is attending the conference.
-							$scope.alertStatus = 'info';
-							$scope.messages = 'You are member of this event';
-							$scope.isUserAttending = true;
-						}
-					}
-				}
-			});
-		});
+		ProfileService.getProfile(getProfileCallback);
 	};
 
 

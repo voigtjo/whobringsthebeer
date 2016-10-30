@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.268" errors="0" skipped="0" tests="10" name="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest">
+<testsuite failures="0" time="0.355" errors="0" skipped="0" tests="10" name="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.7.0_21\jre\bin"/>
@@ -26,7 +26,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
     <property name="os.name" value="Windows 8"/>
-    <property name="classworlds.conf" value="C:\Projekte\workspaces\udacity\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf6055109008185736169.tmp"/>
+    <property name="classworlds.conf" value="C:\Projekte\workspaces\udacity\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf2321078689925988478.tmp"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
     <property name="java.library.path" value="C:\Program Files\Java\jdk1.7.0_21\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jre1.8.0_91/bin/server;C:/Program Files/Java/jre1.8.0_91/bin;C:/Program Files/Java/jre1.8.0_91/lib/amd64;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Java\jdk1.7.0_21\bin;C:\Program Files (x86)\apache-maven-3.0.5\bin;C:\play-2.1.2;C:\cygwin64\bin;C:\Program Files\mongodb\bin;C:\Python27;C:\Program Files (x86)\Heroku\bin;C:\Program Files (x86)\git\cmd;C:\Program Files\nodejs\;C:\Program Files\cURL\bin;C:\Program Files (x86)\Meteor\;C:\Ruby193\bin;C:\grails-2.4.0\bin;C:\xampp\mysql\bin;C:\Program Files (x86)\QuickTime\QTSystem\;C:\HashiCorp\Vagrant\bin;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Java\jdk1.7.0_21\bin;C:\Program Files (x86)\apache-maven-3.0.5\bin;C:\play-2.1.2;C:\cygwin64\bin;C:\Program Files\apache-maven-3.1.0\bin;C:\Program Files (x86)\Sophos\Sophos SSL VPN Client\bin;C:\Program Files (x86)\Google\google_appengine\;C:\Projekte\eclipse;;."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -61,14 +61,14 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase time="0.05" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testEmptyQuery"/>
-  <testcase time="0.047" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testCityQuery"/>
-  <testcase time="0.031" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testMaxAttendeesGT"/>
-  <testcase time="0.015" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testMaxAttendeesLT"/>
-  <testcase time="0.032" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testMaxAttendeesNE"/>
-  <testcase time="0.015" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testTopicsQuery"/>
-  <testcase time="0.016" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testMultipleInequalityFilter"/>
-  <testcase time="0.016" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testComplexQuery"/>
-  <testcase time="0.031" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testMaxAttendeesGTEQ"/>
-  <testcase time="0.015" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testMaxAttendeesLTEQ"/>
+  <testcase time="0.141" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testEmptyQuery"/>
+  <testcase time="0.058" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testCityQuery"/>
+  <testcase time="0.022" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testMaxAttendeesGT"/>
+  <testcase time="0.019" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testMaxAttendeesLT"/>
+  <testcase time="0.031" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testMaxAttendeesNE"/>
+  <testcase time="0.018" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testTopicsQuery"/>
+  <testcase time="0.012" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testMultipleInequalityFilter"/>
+  <testcase time="0.019" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testComplexQuery"/>
+  <testcase time="0.019" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testMaxAttendeesGTEQ"/>
+  <testcase time="0.016" classname="com.google.devrel.training.conference.spi.ConferenceApiGlobalQueryTest" name="testMaxAttendeesLTEQ"/>
 </testsuite>

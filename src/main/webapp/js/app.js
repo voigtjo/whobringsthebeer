@@ -12,7 +12,8 @@
  *
  */
 
-var app = angular.module('conferenceApp',['conferenceControllers', 'rootControllers', 'profileControllers', 'conferenceControllers', 'eventControllers', 'groupControllers', 'ngRoute', 'ui.bootstrap']);
+var app = angular.module('conferenceApp',['eventServices', 'profileServices', 'conferenceControllers', 'rootControllers', 'profileControllers', 'conferenceControllers', 'eventControllers', 'groupControllers', 'invitationControllers', 'ngRoute', 'ui.bootstrap']);
+
 app.config(['$routeProvider',
         function ($routeProvider) {
             $routeProvider.
@@ -51,6 +52,18 @@ app.config(['$routeProvider',
                 when('/event/detail/:websafeEventKey', {
                     templateUrl: '/partials/event_detail.html',
                     controller: 'EventDetailCtrl'
+                }).
+                when('/invitation', {
+                    templateUrl: '/partials/show_invitations.html',
+                    controller: 'ShowInvitationCtrl'
+                }).
+                when('/invitation/create', {
+                    templateUrl: '/partials/create_invitation.html',
+                    controller: 'CreateInvitationCtrl'
+                }).
+                when('/invitation/detail/:websafeEventKey', {
+                    templateUrl: '/partials/invitation_detail.html',
+                    controller: 'InvitationDetailCtrl'
                 }).
                 when('/profile', {
                     templateUrl: '/partials/profile.html',

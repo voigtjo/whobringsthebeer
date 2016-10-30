@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/BH4V1-A6GrnYlzbbC5JtwzkhLiI\"",
+ "etag": "\"zRMgE0l9nVDW4S28VYYcYQF9UW4/yTXBCrlklcB9Gz6bIZsJLuF8rG4\"",
  "discoveryVersion": "v1",
  "id": "conference:v1",
  "name": "conference",
@@ -230,78 +230,6 @@
     ""
    ]
   },
-  "Profile": {
-   "id": "Profile",
-   "type": "object",
-   "properties": {
-    "conferenceKeysToAttend": {
-     "type": "array",
-     "items": {
-      "type": "string"
-     }
-    },
-    "displayName": {
-     "type": "string"
-    },
-    "eventKeysToAttend": {
-     "type": "array",
-     "items": {
-      "type": "string"
-     }
-    },
-    "groupKeysMemberOf": {
-     "type": "array",
-     "items": {
-      "type": "string"
-     }
-    },
-    "mainEmail": {
-     "type": "string"
-    },
-    "teeShirtSize": {
-     "$ref": "TeeShirtSize"
-    },
-    "userId": {
-     "type": "string"
-    }
-   }
-  },
-  "ProfileForm": {
-   "id": "ProfileForm",
-   "type": "object",
-   "properties": {
-    "displayName": {
-     "type": "string"
-    },
-    "teeShirtSize": {
-     "$ref": "TeeShirtSize"
-    }
-   }
-  },
-  "TeeShirtSize": {
-   "id": "TeeShirtSize",
-   "type": "string",
-   "enum": [
-    "L",
-    "M",
-    "NOT_SPECIFIED",
-    "S",
-    "XL",
-    "XS",
-    "XXL",
-    "XXXL"
-   ],
-   "enumDescriptions": [
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    ""
-   ]
-  },
   "WrappedBoolean": {
    "id": "WrappedBoolean",
    "type": "object",
@@ -374,17 +302,6 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "getProfile": {
-   "id": "conference.getProfile",
-   "path": "profile",
-   "httpMethod": "GET",
-   "response": {
-    "$ref": "Profile"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
   "queryConferences": {
    "id": "conference.queryConferences",
    "path": "queryConferences",
@@ -427,21 +344,6 @@
    ],
    "response": {
     "$ref": "WrappedBoolean"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
-  "saveProfile": {
-   "id": "conference.saveProfile",
-   "path": "profile",
-   "httpMethod": "POST",
-   "request": {
-    "$ref": "ProfileForm",
-    "parameterName": "resource"
-   },
-   "response": {
-    "$ref": "Profile"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
