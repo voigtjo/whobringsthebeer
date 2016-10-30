@@ -1,0 +1,138 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://whobringsthebeer.appspot.com/_ah/api",
+  "name" : "profile",
+  "version" : "v1",
+  "description" : "API profile",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://whobringsthebeer.appspot.com/_ah/spi",
+    "deadline" : 65.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "methods" : {
+    "profile.saveProfile" : {
+      "path" : "profile",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.ProfileApi.saveProfile",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "profile.getProfile" : {
+      "path" : "profile",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.ProfileApi.getProfile",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "ProfileForm" : {
+        "id" : "ProfileForm",
+        "type" : "object",
+        "properties" : {
+          "displayName" : {
+            "type" : "string"
+          },
+          "teeShirtSize" : {
+            "$ref" : "TeeShirtSize"
+          }
+        }
+      },
+      "TeeShirtSize" : {
+        "id" : "TeeShirtSize",
+        "type" : "string",
+        "enum" : [ "NOT_SPECIFIED", "XS", "S", "M", "L", "XL", "XXL", "XXXL" ]
+      },
+      "Profile" : {
+        "id" : "Profile",
+        "type" : "object",
+        "properties" : {
+          "displayName" : {
+            "type" : "string"
+          },
+          "mainEmail" : {
+            "type" : "string"
+          },
+          "teeShirtSize" : {
+            "$ref" : "TeeShirtSize"
+          },
+          "userId" : {
+            "type" : "string"
+          },
+          "eventKeysToAttend" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "invitationKeysToAttend" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "conferenceKeysToAttend" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "groupKeysMemberOf" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "methods" : {
+      "de.joevoi.whobringsthebeer.spi.ProfileApi.saveProfile" : {
+        "request" : {
+          "$ref" : "ProfileForm"
+        },
+        "response" : {
+          "$ref" : "Profile"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.ProfileApi.getProfile" : {
+        "response" : {
+          "$ref" : "Profile"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,377 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://whobringsthebeer.appspot.com/_ah/api",
+  "name" : "invitation",
+  "version" : "v1",
+  "description" : "API for the WhoBringsTheBeer Backend application.",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://whobringsthebeer.appspot.com/_ah/spi",
+    "deadline" : 65.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "methods" : {
+    "invitation.registerForInvitation" : {
+      "path" : "invitation/{websafeInvitationKey}/registration",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.InvitationApi.registerForInvitation",
+      "request" : {
+        "parameters" : {
+          "websafeInvitationKey" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "invitation.getInvitationsCreated" : {
+      "path" : "getInvitationsCreated",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.InvitationApi.getInvitationsCreated",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "invitation.getAllInvitations" : {
+      "path" : "getAllInvitations",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.InvitationApi.getAllInvitations",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "invitation.getInvitationsOfEvent" : {
+      "path" : "getInvitationsOfEvent",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.InvitationApi.getInvitationsOfEvent",
+      "request" : {
+        "parameters" : {
+          "websafeEventKey" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "invitation.getEventsMemberOf" : {
+      "path" : "getEventsMemberOf",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.InvitationApi.getEventsMemberOf",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "invitation.getInvitationsToAttend" : {
+      "path" : "getInvitationsToAttend",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.InvitationApi.getInvitationsToAttend",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "invitation.unregisterFromInvitation" : {
+      "path" : "invitation/{websafeInvitationKey}/registration",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.InvitationApi.unregisterFromInvitation",
+      "request" : {
+        "parameters" : {
+          "websafeInvitationKey" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "invitation.saveInvitation" : {
+      "path" : "saveInvitation",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.InvitationApi.saveInvitation",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "invitation.getInvitation" : {
+      "path" : "invitation/{websafeInvitationKey}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "325937508127-0teeplraidu4eis82dg103nnni8u4302.apps.googleusercontent.com", "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "de.joevoi.whobringsthebeer.spi.InvitationApi.getInvitation",
+      "request" : {
+        "parameters" : {
+          "websafeInvitationKey" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "WrappedBoolean" : {
+        "id" : "WrappedBoolean",
+        "type" : "object",
+        "properties" : {
+          "result" : {
+            "type" : "boolean"
+          },
+          "reason" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Invitation" : {
+        "id" : "Invitation",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "websafeEventKey" : {
+            "type" : "string"
+          },
+          "memberKeys" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "invitationKeys" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "location" : {
+            "type" : "string"
+          },
+          "invitationDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "websafeKey" : {
+            "type" : "string"
+          },
+          "eventDisplayName" : {
+            "type" : "string"
+          },
+          "organizerDisplayName" : {
+            "type" : "string"
+          }
+        }
+      },
+      "InvitationCollection" : {
+        "id" : "InvitationCollection",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Invitation"
+            }
+          }
+        }
+      },
+      "Event" : {
+        "id" : "Event",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "websafeGroupKey" : {
+            "type" : "string"
+          },
+          "memberKeys" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "invitationKeys" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "location" : {
+            "type" : "string"
+          },
+          "eventDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "websafeKey" : {
+            "type" : "string"
+          },
+          "organizerDisplayName" : {
+            "type" : "string"
+          },
+          "groupDisplayName" : {
+            "type" : "string"
+          }
+        }
+      },
+      "EventCollection" : {
+        "id" : "EventCollection",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Event"
+            }
+          }
+        }
+      },
+      "InvitationStructureForm" : {
+        "id" : "InvitationStructureForm",
+        "type" : "object",
+        "properties" : {
+          "websafeEventKey" : {
+            "type" : "string"
+          },
+          "invitationDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      }
+    },
+    "methods" : {
+      "de.joevoi.whobringsthebeer.spi.InvitationApi.registerForInvitation" : {
+        "response" : {
+          "$ref" : "WrappedBoolean"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.InvitationApi.getInvitationsCreated" : {
+        "response" : {
+          "$ref" : "InvitationCollection"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.InvitationApi.getAllInvitations" : {
+        "response" : {
+          "$ref" : "InvitationCollection"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.InvitationApi.getInvitationsOfEvent" : {
+        "response" : {
+          "$ref" : "InvitationCollection"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.InvitationApi.getEventsMemberOf" : {
+        "response" : {
+          "$ref" : "EventCollection"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.InvitationApi.getInvitationsToAttend" : {
+        "response" : {
+          "$ref" : "InvitationCollection"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.InvitationApi.unregisterFromInvitation" : {
+        "response" : {
+          "$ref" : "WrappedBoolean"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.InvitationApi.saveInvitation" : {
+        "request" : {
+          "$ref" : "InvitationStructureForm"
+        },
+        "response" : {
+          "$ref" : "Invitation"
+        }
+      },
+      "de.joevoi.whobringsthebeer.spi.InvitationApi.getInvitation" : {
+        "response" : {
+          "$ref" : "Invitation"
+        }
+      }
+    }
+  }
+}

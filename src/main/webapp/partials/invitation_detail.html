@@ -1,0 +1,47 @@
+<div ng-controller="InvitationDetailCtrl">
+	<div class="row">
+		<div class="col-lg-12">
+			<div id="messages" class="alert alert-{{alertStatus}}"
+				ng-show="messages">
+				<span ng-bind="messages"></span> <i
+					class="dismiss-messages pull-right glyphicon glyphicon-remove"
+					ng-click="messages = ''" ng-show="messages"></i>
+			</div>
+			<img class="spinner" src="/img/ajax-loader.gif" ng-show="loading" />
+		</div>
+	</div>
+
+	<div class="row" ng-init="init()">
+		<div class="col-md-9">
+			<div class="well well-sm">
+				<h2>{{invitation.eventDisplayName}}</h2>
+				<div>
+					<label for="location">Location: </label> <span id="location">{{invitation.location}}</span>
+				</div>
+				<div>
+					<label for="invitationDate">Invitation Date: </label> <span id="invitationDate">{{invitation.invitationDate| date:'dd-MMMM-yyyy'}}</span>
+				</div>
+				<div>
+					<label for="organizer">Organizer: </label> <span id="organizer">{{invitation.organizerDisplayName}}</span>
+				</div>
+
+				<p>
+					<a class="btn btn-primary" ng-hide="isUserAttending"
+						ng-click="registerForInvitation()" ng-disabled="loading">Register</a>
+				</p>
+				<p>
+					<a class="btn btn-primary" ng-show="isUserAttending"
+						ng-click="unregisterFromInvitation()" ng-disabled="loading">Unregister</a>
+				</p>
+			</div>
+
+			<form class="form" novalidate role="form">
+				<fieldset>
+					<div>
+						<label for="websafeKey">WebsafeKey: </label> <span id="websafeKey">{{invitation.websafeKey}}</span>
+					</div>
+				</fieldset>
+			</form>
+
+		</div>
+	</div>
