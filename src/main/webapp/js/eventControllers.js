@@ -225,7 +225,7 @@ eventAppControllers.controller('ShowEventCtrl', function ($scope, $log, oauth2Pr
 });
 
 ///###///
-eventAppControllers.controller('EventDetailCtrl', function ($scope, $log, $routeParams, HTTP_ERRORS) {
+eventAppControllers.controller('EventDetailCtrl', function ($scope, $log, $routeParams, HTTP_ERRORS, EventService, ProfileService) {
 	$scope.event = {};
 
 	$scope.isUserAttending = false;
@@ -252,6 +252,50 @@ eventAppControllers.controller('EventDetailCtrl', function ($scope, $log, $route
 			}
 		});
 	};
+
+	var getRegisterCallback = function(resp, text){
+		$scope.$apply(function () {
+			$scope.loading = false;
+			var errorText =  'register for'; 
+			if (text === 'unregister'){
+				errorText =  'unregister from'; 
+			}
+			
+			if (resp.error) {
+				// The request has failed.
+				var errorMessage = resp.error.message || '';
+				
+				$scope.messages = 'Failed to ' + errorText + ' the event : ' + errorMessage;
+				$scope.alertStatus = 'warning';
+				$log.error($scope.messages);
+
+				if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
+					oauth2Provider.showLoginModal();
+					return;
+				}
+			} else {
+				if (resp.result) {
+					// Register succeeded.
+					var resultText =  'Registered for'; 
+					var userAttending = true;
+					if (text === 'unregister'){
+						resultText =  'Unregistered from'; 
+						userAttending = false;
+					}
+					$scope.messages = resultText + ' the event';
+					$scope.alertStatus = 'success';
+					$scope.isUserAttending = userAttending;
+					$log.info($scope.messages);
+				} else {
+					$scope.messages = 'Failed to ' + errorText + ' the event';
+					$scope.alertStatus = 'warning';
+					$log.error($scope.messages);
+				}
+			}
+		});
+	};
+	
+
 	var getProfileCallback = function(resp){
 		$scope.$apply(function () {
 			$scope.loading = false;
@@ -271,10 +315,10 @@ eventAppControllers.controller('EventDetailCtrl', function ($scope, $log, $route
 			}
 		});
 	};
-	
+
 	$scope.init = function () {
 		$scope.loading = true;
-		EventService.getEvent(initCallback, {websafeEventKey: $routeParams.websafeEventKey});
+		EventService.getEvent(getEventCallback, {websafeEventKey: $routeParams.websafeEventKey});
 
 		$scope.loading = true;
 		// If the user is attending the group, updates the status message and available function.
@@ -287,35 +331,7 @@ eventAppControllers.controller('EventDetailCtrl', function ($scope, $log, $route
 	 */
 	$scope.registerForEvent = function () {
 		$scope.loading = true;
-		gapi.client.event.registerForEvent({
-			websafeEventKey: $routeParams.websafeEventKey
-		}).execute(function (resp) {
-			$scope.$apply(function () {
-				$scope.loading = false;
-				if (resp.error) {
-					// The request has failed.
-					var errorMessage = resp.error.message || '';
-					$scope.messages = 'Failed to register for the event : ' + errorMessage;
-					$scope.alertStatus = 'warning';
-					$log.error($scope.messages);
-
-					if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-						oauth2Provider.showLoginModal();
-						return;
-					}
-				} else {
-					if (resp.result) {
-						// Register succeeded.
-						$scope.messages = 'Registered for the event';
-						$scope.alertStatus = 'success';
-						$scope.isUserAttending = true;
-					} else {
-						$scope.messages = 'Failed to register for the event';
-						$scope.alertStatus = 'warning';
-					}
-				}
-			});
-		});
+		EventService.registerForEvent(getRegisterCallback, {websafeEventKey: $routeParams.websafeEventKey}, 'register');
 	};
 
 	/**
@@ -323,44 +339,12 @@ eventAppControllers.controller('EventDetailCtrl', function ($scope, $log, $route
 	 */
 	$scope.unregisterFromEvent = function () {
 		$scope.loading = true;
-		gapi.client.event.unregisterFromEvent({
-			websafeEventKey: $routeParams.websafeEventKey
-		}).execute(function (resp) {
-			$scope.$apply(function () {
-				$scope.loading = false;
-				if (resp.error) {
-					// The request has failed.
-					var errorMessage = resp.error.message || '';
-					$scope.messages = 'Failed to unregister from the event : ' + errorMessage;
-					$scope.alertStatus = 'warning';
-					$log.error($scope.messages);
-					if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-						oauth2Provider.showLoginModal();
-						return;
-					}
-				} else {
-					if (resp.result) {
-						// Unregister succeeded.
-						$scope.messages = 'Unregistered from the event';
-						$scope.alertStatus = 'success';
-						$scope.isUserAttending = false;
-						$log.info($scope.messages);
-					} else {
-						var errorMessage = resp.error.message || '';
-						$scope.messages = 'Failed to unregister from the event : ' + $routeParams.websafeEventKey +
-						' : ' + errorMessage;
-						$scope.messages = 'Failed to unregister from the event';
-						$scope.alertStatus = 'warning';
-						$log.error($scope.messages);
-					}
-				}
-			});
-		});
+		EventService.unregisterFromEvent(getRegisterCallback, {websafeEventKey: $routeParams.websafeEventKey}, 'unregister');
 	};
 });
 
 ///###///
-eventAppControllers.controller('CreateEventCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
+eventAppControllers.controller('CreateEventCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS, EventService) {
 
 	/**
 	 * The conference object being edited in the page.
@@ -405,39 +389,66 @@ eventAppControllers.controller('CreateEventCtrl', function ($scope, $log, oauth2
 		return !eventForm.$invalid;
 	}
 	
+	
+	var getGroupsCallback = function(resp){
+		$scope.$apply(function () {
+			if (resp.error) {
+				// The request has failed.
+				var errorMessage = resp.error.message || '';
+				$scope.messages = 'Failed to query the groups to attend : ' + errorMessage;
+				$scope.alertStatus = 'warning';
+				$log.error($scope.messages);
+
+				if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
+					oauth2Provider.showLoginModal();
+					return;
+				}
+			} else {
+				// The request has succeeded.
+				$scope.groups = resp.result.items;
+				$scope.loading = false;
+				$scope.messages = 'Query succeeded : Groups you will attend (or you have attended)';
+				$scope.alertStatus = 'success';
+				$log.info($scope.messages);
+			}
+			$scope.submitted = true;
+		});
+	};
+	
+	var saveEventCallback = function(resp){
+		$scope.$apply(function () {
+			$scope.loading = false;
+			if (resp.error) {
+				// The request has failed.
+				var errorMessage = resp.error.message || '';
+				$scope.messages = 'Failed to create an event: ' + errorMessage;
+				$scope.alertStatus = 'warning';
+				$log.error($scope.messages + ' Event : ' + JSON.stringify($scope.event));
+
+				if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
+					oauth2Provider.showLoginModal();
+					return;
+				}
+			} else {
+				// The request has succeeded.
+				$scope.messages = 'The event has been created : ' + resp.result.name;
+				$scope.alertStatus = 'success';
+				$scope.submitted = false;
+				$scope.event = {};
+				$log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
+			}
+		});
+	};
+
 	$scope.init = function () {
 		$scope.loading = true;
-		gapi.client.event.getGroupsMemberOf().
-		execute(function (resp) {
-			$scope.$apply(function () {
-				if (resp.error) {
-					// The request has failed.
-					var errorMessage = resp.error.message || '';
-					$scope.messages = 'Failed to query the groups to attend : ' + errorMessage;
-					$scope.alertStatus = 'warning';
-					$log.error($scope.messages);
-
-					if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-						oauth2Provider.showLoginModal();
-						return;
-					}
-				} else {
-					// The request has succeeded.
-					$scope.groups = resp.result.items;
-					$scope.loading = false;
-					$scope.messages = 'Query succeeded : Groups you will attend (or you have attended)';
-					$scope.alertStatus = 'success';
-					$log.info($scope.messages);
-				}
-				$scope.submitted = true;
-			});
-		});
+		EventService.getGroupsMemberOf(getGroupsCallback);
 	};
 
 	$scope.setWebsafeGroupKey = function(){
 		$scope.event.websafeGroupKey = $scope.group.websafeKey;
 	};
-	
+
 	/**
 	 * Invokes the conference.createConference API.
 	 *
@@ -447,39 +458,12 @@ eventAppControllers.controller('CreateEventCtrl', function ($scope, $log, oauth2
 		if (!$scope.isValidEvent(eventForm)) {
 			return;
 		}
-
 		$scope.loading = true;
-		console.log("###1 $scope.event.location= " + $scope.event.location + ", $scope.event.eventDate=" + $scope.event.eventDate);
 		var eventStructureForm = {};
 		eventStructureForm.websafeGroupKey = $scope.event.websafeGroupKey;
 		eventStructureForm.location = $scope.event.location;
 		eventStructureForm.eventDate = $scope.event.eventDate;
-		console.log("###3 eventStructureForm:");
-		console.log(eventStructureForm);
-		gapi.client.event.saveEvent(eventStructureForm).
-		execute(function (resp) {
-			$scope.$apply(function () {
-				$scope.loading = false;
-				if (resp.error) {
-					// The request has failed.
-					var errorMessage = resp.error.message || '';
-					$scope.messages = 'Failed to create an event: ' + errorMessage;
-					$scope.alertStatus = 'warning';
-					$log.error($scope.messages + ' Event : ' + JSON.stringify($scope.event));
-
-					if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-						oauth2Provider.showLoginModal();
-						return;
-					}
-				} else {
-					// The request has succeeded.
-					$scope.messages = 'The event has been created : ' + resp.result.name;
-					$scope.alertStatus = 'success';
-					$scope.submitted = false;
-					$scope.event = {};
-					$log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
-				}
-			});
-		});
+		
+		EventService.saveEvent(eventStructureForm, saveEventCallback);
 	};
 });

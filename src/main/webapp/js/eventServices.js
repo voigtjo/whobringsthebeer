@@ -17,6 +17,22 @@ eventServices.factory('EventService', function() {
 		
 		getEvent : function(getEventCallback, websafeEventKey){
 			return gapi.client.event.getEvent(websafeEventKey).execute(getEventCallback);
+		},
+		
+		registerForEvent : function(getRegisterCallback, websafeEventKey){
+			return gapi.client.event.registerForEvent(websafeEventKey).execute(getRegisterCallback);
+		},
+		
+		unregisterFromEvent : function(getRegisterCallback, websafeEventKey){
+			return gapi.client.event.registerForEvent(websafeEventKey).execute(getRegisterCallback);
+		},
+		
+		getGroupsMemberOf : function(getGroupsCallback) {
+			return gapi.client.event.getGroupsMemberOf().execute(getGroupsCallback);
+		},
+		
+		saveEvent : function(eventStructureForm, saveEventCallback) {
+			return gapi.client.event.saveEvent(eventStructureForm).execute(saveEventCallback);
 		}
 	}
 });
